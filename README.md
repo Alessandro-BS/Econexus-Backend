@@ -42,17 +42,26 @@ Econexus-Backend/
 │   ├── main/
 │   │   ├── java/com/econexus/backend/
 │   │   │   ├── config/        # Configuración (CORS, Swagger, Security)
-│   │   │   ├── security/      # JWT Token Provider, Auth Filter
-│   │   │   ├── model/         # Entidades JPA (7 tablas)
+│   │   │   ├── security/      # Módulo de seguridad
+│   │   │   │   ├── jwt/       # JWT Token Provider, Auth Filter
+│   │   │   │   └── service/   # CustomUserDetailsService
+│   │   │   ├── model/         # Dominio
+│   │   │   │   ├── entity/    # Entidades JPA (7 tablas)
+│   │   │   │   └── enums/     # Enumeraciones (Rol, Estado, etc.)
 │   │   │   ├── repository/    # Interfaces JPA Repository
 │   │   │   ├── dto/
 │   │   │   │   ├── request/   # DTOs de entrada (validados)
 │   │   │   │   └── response/  # DTOs de salida (sin datos sensibles)
+│   │   │   ├── mapper/        # Conversión Entity ↔ DTO
 │   │   │   ├── service/       # Lógica de negocio
-│   │   │   ├── controller/    # REST Controllers (documentados con Swagger)
+│   │   │   ├── controller/    # REST Controllers
+│   │   │   │   ├── api/       # Endpoints REST (/api/*)
+│   │   │   │   └── web/       # Health check, Swagger redirect
 │   │   │   ├── exception/     # Manejo global de excepciones
 │   │   │   └── EconexusBackendApplication.java
 │   │   └── resources/
+│   │       ├── db/
+│   │       │   └── saneamiento_ambiental.sql  # Script de BD (v2.0)
 │   │       └── application.yml
 │   └── test/java/com/econexus/backend/
 ├── .gitignore
@@ -76,7 +85,9 @@ erDiagram
         VARCHAR password_hash
         ENUM rol "ADMIN | SUPERVISOR | OPERADOR"
         ENUM estado "ACTIVO | INACTIVO"
-        DATETIME fecha_creacion
+        DATETIME ultimo_login
+        DATETIME created_at
+        DATETIME updated_at
     }
 
     CLIENTES {
@@ -88,6 +99,8 @@ erDiagram
         VARCHAR email
         TEXT direccion
         ENUM estado "ACTIVO | INACTIVO"
+        DATETIME created_at
+        DATETIME updated_at
     }
 
     TIPOS_SERVICIO {
@@ -96,6 +109,8 @@ erDiagram
         ENUM categoria "SOLIDO_PELIGROSO | SOLIDO_NO_PELIGROSO | LIQUIDO | FUMIGACION | DESINFECCION | DESINSECTACION"
         TEXT descripcion
         ENUM estado "ACTIVO | INACTIVO"
+        DATETIME created_at
+        DATETIME updated_at
     }
 
     PROVEEDORES {
@@ -108,7 +123,8 @@ erDiagram
         TEXT direccion
         INT tipo_servicio_id FK
         ENUM estado "ACTIVO | INACTIVO"
-        DATETIME fecha_registro
+        DATETIME created_at
+        DATETIME updated_at
     }
 
     ORDENES_SERVICIO {
@@ -116,20 +132,26 @@ erDiagram
         VARCHAR numero_orden UK
         DATETIME fecha_emision
         INT cliente_id FK
+        INT tipo_servicio_id FK
         DECIMAL monto_total
         ENUM estado_pago "PENDIENTE | PAGADO | ANULADO"
         VARCHAR factura_url
+        TEXT observaciones
+        DATETIME created_at
+        DATETIME updated_at
     }
 
     REPORTES {
         INT id PK
-        DATETIME fecha_registro
         INT cliente_id FK
         INT tipo_servicio_id FK
+        INT orden_servicio_id FK
         TEXT descripcion
         DECIMAL cantidad
         ENUM unidad_medida "KG | LITROS | M2 | UNIDAD"
         ENUM estado_cumplimiento "PENDIENTE | EN_PROCESO | CUMPLIDO | OBSERVADO"
+        DATETIME created_at
+        DATETIME updated_at
     }
 
     NORMATIVAS {
@@ -141,12 +163,16 @@ erDiagram
         VARCHAR entidad_emisora
         VARCHAR url_documento
         ENUM estado "VIGENTE | DEROGADA"
+        DATETIME created_at
+        DATETIME updated_at
     }
 
     CLIENTES ||--o{ ORDENES_SERVICIO : "contrata"
     CLIENTES ||--o{ REPORTES : "tiene"
     TIPOS_SERVICIO ||--o{ PROVEEDORES : "suministra"
+    TIPOS_SERVICIO ||--o{ ORDENES_SERVICIO : "realiza"
     TIPOS_SERVICIO ||--o{ REPORTES : "clasifica"
+    ORDENES_SERVICIO ||--o{ REPORTES : "genera"
 ```
 
 ---
