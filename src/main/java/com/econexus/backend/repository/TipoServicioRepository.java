@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface TipoServicioRepository extends JpaRepository<TipoServicio, Long> {
     List<TipoServicio> findAllByEstado(EstadoEnum estado);
+    boolean existsByNombreIgnoreCase(String nombre);
 }
