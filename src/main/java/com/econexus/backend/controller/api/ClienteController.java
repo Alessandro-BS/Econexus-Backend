@@ -24,9 +24,23 @@ public class ClienteController {
         return ResponseEntity.ok(clientes);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ClienteResponse> obtenerCliente(@PathVariable Long id) {
+        ClienteResponse cliente = clienteService.obtenerClienteById(id);
+        return ResponseEntity.ok(cliente);
+    }
+
     @PostMapping
     public ResponseEntity<ClienteResponse> crearCliente(@Valid @RequestBody ClienteRequest request) {
         ClienteResponse cliente = clienteService.crearCliente(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteResponse> actualizarCliente(
+            @PathVariable Long id,
+            @Valid @RequestBody ClienteRequest request) {
+        ClienteResponse cliente = clienteService.actualizarCliente(id, request);
+        return ResponseEntity.ok(cliente);
     }
 }
