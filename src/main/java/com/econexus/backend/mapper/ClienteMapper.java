@@ -39,4 +39,17 @@ public class ClienteMapper {
                 .direccion(request.getDireccion())
                 .build();
     }
+
+    public void updateEntityFromRequest(ClienteRequest request, Cliente cliente) {
+        if (request == null || cliente == null) {
+            return;
+        }
+
+        cliente.setRazonSocial(request.getRazon_social());
+        cliente.setRuc(request.getRuc());
+        cliente.setContactoPrincipal(request.getContacto_principal());
+        cliente.setTelefono(request.getTelefono());
+        cliente.setEmail(request.getEmail());
+        cliente.setDireccion(request.getDireccion());
+    }
 }
