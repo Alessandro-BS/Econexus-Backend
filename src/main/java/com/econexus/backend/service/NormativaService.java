@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface NormativaService {
     List<NormativaResponse> listarNormativasVigentes();
+    NormativaResponse crearNormativa(com.econexus.backend.dto.request.NormativaRequest request);
 }
