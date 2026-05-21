@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface NormativaRepository extends JpaRepository<Normativa, Long> {
     List<Normativa> findAllByEstado(EstadoNormativaEnum estado);
+    boolean existsByCodigoIgnoreCase(String codigo);
 }
