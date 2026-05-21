@@ -2,6 +2,7 @@ package com.econexus.backend.service.impl;
 
 import com.econexus.backend.dto.request.ClienteRequest;
 import com.econexus.backend.dto.response.ClienteResponse;
+import com.econexus.backend.exception.ResourceNotFoundException;
 import com.econexus.backend.mapper.ClienteMapper;
 import com.econexus.backend.model.entity.Cliente;
 import com.econexus.backend.repository.ClienteRepository;
@@ -33,6 +34,25 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public ClienteResponse crearCliente(ClienteRequest request) {
         Cliente cliente = clienteMapper.toEntity(request);
+        cliente = clienteRepository.save(cliente);
+        return clienteMapper.toResponse(cliente);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ClienteResponse obtenerClienteById(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con id: " + id));
+        return clienteMapper.toResponse(cliente);
+    }
+
+    @Override
+    @Transactional
+    public ClienteResponse actualizarCliente(Long id, ClienteRequest request) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con id: " + id));
+        
+        clienteMapper.updateEntityFromRequest(request, cliente);
         cliente = clienteRepository.save(cliente);
         return clienteMapper.toResponse(cliente);
     }
