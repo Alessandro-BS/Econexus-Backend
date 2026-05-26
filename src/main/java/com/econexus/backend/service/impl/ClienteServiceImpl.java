@@ -36,4 +36,16 @@ public class ClienteServiceImpl implements ClienteService {
         cliente = clienteRepository.save(cliente);
         return clienteMapper.toResponse(cliente);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ClienteResponse> buscarClientes(String query) {
+        if (query == null || query.trim().isEmpty()) {
+            return listarClientes(); // Si la consulta está vacía, listar todos
+        }
+        return clienteRepository.buscarClientes(query.trim())
+                .stream()
+                .map(clienteMapper::toResponse)
+                .collect(Collectors.toList());
+    }
 }
