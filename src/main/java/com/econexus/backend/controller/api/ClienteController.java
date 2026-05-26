@@ -29,4 +29,10 @@ public class ClienteController {
         ClienteResponse cliente = clienteService.crearCliente(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(cliente);
     }
+
+    @GetMapping("/buscar")
+    public ResponseEntity<List<ClienteResponse>> buscarClientes(@RequestParam(value = "q", required = false) String query) {
+        List<ClienteResponse> clientes = clienteService.buscarClientes(query);
+        return ResponseEntity.ok(clientes);
+    }
 }
