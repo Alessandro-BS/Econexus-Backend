@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Maven Wrapper script for Unix/Mac
 # ----------------------------------------------------------------------------
 # Licensed to the Apache Software Foundation (ASF) under one
