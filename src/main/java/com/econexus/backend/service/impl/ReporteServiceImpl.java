@@ -8,6 +8,7 @@ import com.econexus.backend.model.entity.Cliente;
 import com.econexus.backend.model.entity.OrdenServicio;
 import com.econexus.backend.model.entity.Reporte;
 import com.econexus.backend.model.entity.TipoServicio;
+import com.econexus.backend.model.enums.EstadoCumplimientoEnum;
 import com.econexus.backend.repository.ClienteRepository;
 import com.econexus.backend.repository.OrdenServicioRepository;
 import com.econexus.backend.repository.ReporteRepository;
@@ -38,6 +39,26 @@ public class ReporteServiceImpl implements ReporteService {
                 .map(reporteMapper::toResponse)
                 .collect(Collectors.toList());
     }
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReporteResponse> filtrarPorEstado(String estadoCumplimiento) {
+        EstadoCumplimientoEnum estado = EstadoCumplimientoEnum.valueOf(estadoCumplimiento.toUpperCase());
+        return reporteRepository.findByEstadoCumplimiento(estado)
+                .stream()
+                .map(reporteMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ReporteResponse> filtrarPorCliente(Long clienteId) {
+        clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + clienteId));
+        return reporteRepository.findByClienteId(clienteId)
+                .stream()
+                .map(reporteMapper::toResponse)
+                .collect(Collectors.toList());
+        }
 
     @Override
     @Transactional
