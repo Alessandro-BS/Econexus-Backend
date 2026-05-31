@@ -41,23 +41,23 @@ public class ReporteServiceImpl implements ReporteService {
     @Override
     @Transactional
     public ReporteResponse crearReporte(ReporteRequest request) {
-        if (request.getCliente_id() == null) {
+        if (request.getClienteId() == null) {
             throw new IllegalArgumentException("El cliente es obligatorio");
         }
-        if (request.getTipo_servicio_id() == null) {
+        if (request.getTipoServicioId() == null) {
             throw new IllegalArgumentException("El tipo de servicio es obligatorio");
         }
 
-        Cliente cliente = clienteRepository.findById(request.getCliente_id())
-                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getCliente_id()));
+        Cliente cliente = clienteRepository.findById(request.getClienteId())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getClienteId()));
 
-        TipoServicio tipoServicio = tipoServicioRepository.findById(request.getTipo_servicio_id())
-                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de servicio con ID: " + request.getTipo_servicio_id()));
+        TipoServicio tipoServicio = tipoServicioRepository.findById(request.getTipoServicioId())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de servicio con ID: " + request.getTipoServicioId()));
 
         OrdenServicio ordenServicio = null;
-        if (request.getOrden_servicio_id() != null) {
-            ordenServicio = ordenServicioRepository.findById(request.getOrden_servicio_id())
-                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró la orden de servicio con ID: " + request.getOrden_servicio_id()));
+        if (request.getOrdenServicioId() != null) {
+            ordenServicio = ordenServicioRepository.findById(request.getOrdenServicioId())
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró la orden de servicio con ID: " + request.getOrdenServicioId()));
         }
 
         Reporte reporte = reporteMapper.toEntity(request);
@@ -75,21 +75,21 @@ public class ReporteServiceImpl implements ReporteService {
         Reporte reporte = reporteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el reporte con ID: " + id));
 
-        if (request.getCliente_id() != null) {
-            Cliente cliente = clienteRepository.findById(request.getCliente_id())
-                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getCliente_id()));
+        if (request.getClienteId() != null) {
+            Cliente cliente = clienteRepository.findById(request.getClienteId())
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getClienteId()));
             reporte.setCliente(cliente);
         }
 
-        if (request.getTipo_servicio_id() != null) {
-            TipoServicio tipoServicio = tipoServicioRepository.findById(request.getTipo_servicio_id())
-                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de servicio con ID: " + request.getTipo_servicio_id()));
+        if (request.getTipoServicioId() != null) {
+            TipoServicio tipoServicio = tipoServicioRepository.findById(request.getTipoServicioId())
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de servicio con ID: " + request.getTipoServicioId()));
             reporte.setTipoServicio(tipoServicio);
         }
 
-        if (request.getOrden_servicio_id() != null) {
-            OrdenServicio ordenServicio = ordenServicioRepository.findById(request.getOrden_servicio_id())
-                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró la orden de servicio con ID: " + request.getOrden_servicio_id()));
+        if (request.getOrdenServicioId() != null) {
+            OrdenServicio ordenServicio = ordenServicioRepository.findById(request.getOrdenServicioId())
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró la orden de servicio con ID: " + request.getOrdenServicioId()));
             reporte.setOrdenServicio(ordenServicio);
         }
 

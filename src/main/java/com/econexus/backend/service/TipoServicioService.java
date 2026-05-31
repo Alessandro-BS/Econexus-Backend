@@ -8,4 +8,6 @@ import java.util.List;
 public interface TipoServicioService {
     List<TipoServicioResponse> listarTiposServicio();
     TipoServicioResponse crearTipoServicio(TipoServicioRequest request);
+    TipoServicioResponse editarTipoServicio(Long id, TipoServicioRequest request);
+    void eliminarTipoServicio(Long id);
 }

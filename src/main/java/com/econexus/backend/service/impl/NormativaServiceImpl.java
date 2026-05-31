@@ -3,6 +3,7 @@ package com.econexus.backend.service.impl;
 import com.econexus.backend.dto.request.NormativaRequest;
 import com.econexus.backend.dto.response.NormativaResponse;
 import com.econexus.backend.exception.DuplicateResourceException;
+import com.econexus.backend.exception.ResourceNotFoundException;
 import com.econexus.backend.model.entity.Normativa;
 import com.econexus.backend.mapper.NormativaMapper;
 import com.econexus.backend.model.enums.EstadoNormativaEnum;
@@ -42,5 +43,26 @@ public class NormativaServiceImpl implements NormativaService {
         Normativa normativa = normativaMapper.toEntity(request);
         normativa = normativaRepository.save(normativa);
         return normativaMapper.toResponse(normativa);
+    }
+
+    @Override
+    @Transactional
+    public NormativaResponse editarNormativa(Long id, NormativaRequest request) {
+        Normativa normativa = normativaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Normativa no encontrada con ID: " + id));
+
+        normativaMapper.updateEntityFromRequest(request, normativa);
+        normativa = normativaRepository.save(normativa);
+        return normativaMapper.toResponse(normativa);
+    }
+
+    @Override
+    @Transactional
+    public void eliminarNormativa(Long id) {
+        Normativa normativa = normativaRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Normativa no encontrada con ID: " + id));
+
+        normativa.setEstado(EstadoNormativaEnum.DEROGADA);
+        normativaRepository.save(normativa);
     }
 }

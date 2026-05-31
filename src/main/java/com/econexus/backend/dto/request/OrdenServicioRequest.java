@@ -1,7 +1,7 @@
 package com.econexus.backend.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,17 +15,21 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class OrdenServicioRequest {
 
-    private Long cliente_id;
+    @NotBlank(message = "El número de orden es obligatorio")
+    private String numeroOrden;
 
-    private BigDecimal monto_total;
+    @NotNull(message = "El cliente es obligatorio")
+    private Long clienteId;
 
-    private String estado_pago;
+    @NotNull(message = "El tipo de servicio es obligatorio")
+    private Long tipoServicioId;
 
-    private String factura_url;
+    @NotNull(message = "El monto total es obligatorio")
+    private BigDecimal montoTotal;
+
+    private String estadoPago;  // PENDIENTE | PAGADO | ANULADO (default: PENDIENTE)
+
+    private String facturaUrl;
 
     private String observaciones;
-
-    private Long tipo_servicio_id;
-
-    private String pdf_base64;
 }

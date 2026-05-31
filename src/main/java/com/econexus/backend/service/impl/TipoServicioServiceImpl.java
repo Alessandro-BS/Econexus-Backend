@@ -50,4 +50,28 @@ public class TipoServicioServiceImpl implements TipoServicioService {
         tipoServicio = tipoServicioRepository.save(tipoServicio);
         return tipoServicioMapper.toResponse(tipoServicio);
     }
+
+    @Override
+    @Transactional
+    public TipoServicioResponse editarTipoServicio(Long id, TipoServicioRequest request) {
+        TipoServicio tipoServicio = tipoServicioRepository.findById(id)
+                .orElseThrow(() -> new com.econexus.backend.exception.ResourceNotFoundException("Tipo de servicio no encontrado con ID: " + id));
+
+        tipoServicio.setNombre(request.getNombre().trim());
+        tipoServicio.setCategoria(CategoriaTipoServicioEnum.valueOf(request.getCategoria().trim().toUpperCase()));
+        tipoServicio.setDescripcion(request.getDescripcion());
+
+        tipoServicio = tipoServicioRepository.save(tipoServicio);
+        return tipoServicioMapper.toResponse(tipoServicio);
+    }
+
+    @Override
+    @Transactional
+    public void eliminarTipoServicio(Long id) {
+        TipoServicio tipoServicio = tipoServicioRepository.findById(id)
+                .orElseThrow(() -> new com.econexus.backend.exception.ResourceNotFoundException("Tipo de servicio no encontrado con ID: " + id));
+
+        tipoServicio.setEstado(EstadoEnum.INACTIVO);
+        tipoServicioRepository.save(tipoServicio);
+    }
 }

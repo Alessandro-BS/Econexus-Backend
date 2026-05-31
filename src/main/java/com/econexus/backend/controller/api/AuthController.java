@@ -28,24 +28,29 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getEmail(),
+                            loginRequest.getPassword()
+                    )
+            );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String jwt = tokenProvider.generateToken(authentication);
+            String jwt = tokenProvider.generateToken(authentication);
 
-        // Actualizar ultimo login
-        Usuario usuario = usuarioRepository.findByEmail(loginRequest.getEmail()).orElse(null);
-        if (usuario != null) {
-            usuario.setUltimoLogin(LocalDateTime.now());
-            usuarioRepository.save(usuario);
+            // Actualizar ultimo login
+            Usuario usuario = usuarioRepository.findByEmail(loginRequest.getEmail()).orElse(null);
+            if (usuario != null) {
+                usuario.setUltimoLogin(LocalDateTime.now());
+                usuarioRepository.save(usuario);
+            }
+
+            return ResponseEntity.ok(new AuthResponse(jwt));
+            
+        } catch (org.springframework.security.authentication.BadCredentialsException ex) {
+            return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).build();
         }
-
-        return ResponseEntity.ok(new AuthResponse(jwt));
     }
 }
