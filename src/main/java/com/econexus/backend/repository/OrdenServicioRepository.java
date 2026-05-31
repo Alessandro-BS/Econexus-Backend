@@ -28,5 +28,10 @@ public interface OrdenServicioRepository extends JpaRepository<OrdenServicio, Lo
          "AND YEAR(o.fechaEmision) = YEAR(CURRENT_DATE)")
     long countOrdenesMesActual();
 
+    @Query("SELECT COALESCE(SUM(o.montoTotal), 0) FROM OrdenServicio o " +
+       "WHERE MONTH(o.fechaEmision) = MONTH(CURRENT_DATE) - 1 " +
+       "AND YEAR(o.fechaEmision) = YEAR(CURRENT_DATE)")
+    BigDecimal sumIngresosMesAnterior();
+
     
 }
