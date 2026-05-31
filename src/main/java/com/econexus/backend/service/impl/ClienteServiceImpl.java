@@ -66,4 +66,15 @@ public class ClienteServiceImpl implements ClienteService {
         cliente = clienteRepository.save(cliente);
         return clienteMapper.toResponse(cliente);
     }
+
+    @Override
+    @Transactional
+    public void eliminarCliente(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con ID: " + id)); 
+        
+        // Logical delete (baja lógica) as per constraints
+        cliente.setEstado(com.econexus.backend.model.enums.EstadoEnum.INACTIVO);
+        clienteRepository.save(cliente);
+    }
 }
