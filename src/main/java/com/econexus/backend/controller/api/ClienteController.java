@@ -35,4 +35,18 @@ public class ClienteController {
         List<ClienteResponse> clientes = clienteService.buscarClientes(query);
         return ResponseEntity.ok(clientes);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteResponse> editarCliente(
+            @PathVariable Long id, 
+            @Valid @RequestBody ClienteRequest request) {
+        ClienteResponse clienteActualizado = clienteService.editarCliente(id, request);
+        return ResponseEntity.ok(clienteActualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarCliente(@PathVariable Long id) {
+        clienteService.eliminarCliente(id);
+        return ResponseEntity.noContent().build();
+    }
 }

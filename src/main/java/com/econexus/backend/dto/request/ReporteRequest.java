@@ -15,14 +15,14 @@ import java.math.BigDecimal;
 public class ReporteRequest {
 
     @NotNull(message = "El cliente es obligatorio")
-    private Long cliente_id;
+    private Long clienteId;
 
     @NotNull(message = "El tipo de servicio es obligatorio")
-    private Long tipo_servicio_id;
+    private Long tipoServicioId;
 
-    private Long orden_servicio_id;
+    private Long ordenServicioId;
     private String descripcion;
     private BigDecimal cantidad;
-    private String unidad_medida;
-    private String estado_cumplimiento;
+    private String unidadMedida;         // KG | LITROS | M2 | UNIDAD
+    private String estadoCumplimiento;   // PENDIENTE | EN_PROCESO | CUMPLIDO | OBSERVADO
 }

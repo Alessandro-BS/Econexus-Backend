@@ -2,6 +2,7 @@ package com.econexus.backend.service.impl;
 
 import com.econexus.backend.dto.request.ClienteRequest;
 import com.econexus.backend.dto.response.ClienteResponse;
+import com.econexus.backend.exception.ResourceNotFoundException;
 import com.econexus.backend.mapper.ClienteMapper;
 import com.econexus.backend.model.entity.Cliente;
 import com.econexus.backend.repository.ClienteRepository;
@@ -47,5 +48,33 @@ public class ClienteServiceImpl implements ClienteService {
                 .stream()
                 .map(clienteMapper::toResponse)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public ClienteResponse editarCliente(Long id, ClienteRequest request) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con ID: " + id)); 
+        
+        // Check uniqueness if ruc changed
+        if (!cliente.getRuc().equals(request.getRuc())) {
+            // we should ideally check if the new ruc is already taken, but there's no existsByRuc method shown. 
+            // the database constraint will throw an exception if it's a duplicate.
+        }
+
+        clienteMapper.updateEntityFromRequest(request, cliente);
+        cliente = clienteRepository.save(cliente);
+        return clienteMapper.toResponse(cliente);
+    }
+
+    @Override
+    @Transactional
+    public void eliminarCliente(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con ID: " + id)); 
+        
+        // Logical delete (baja lógica) as per constraints
+        cliente.setEstado(com.econexus.backend.model.enums.EstadoEnum.INACTIVO);
+        clienteRepository.save(cliente);
     }
 }

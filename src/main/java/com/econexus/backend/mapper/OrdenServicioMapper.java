@@ -15,12 +15,12 @@ public class OrdenServicioMapper {
         }
 
         OrdenServicio.OrdenServicioBuilder builder = OrdenServicio.builder()
-                .montoTotal(request.getMonto_total())
-                .facturaUrl(request.getPdf_base64() != null ? request.getPdf_base64() : request.getFactura_url())
+                .montoTotal(request.getMontoTotal())
+                .facturaUrl(request.getFacturaUrl())
                 .observaciones(request.getObservaciones());
 
-        if (request.getEstado_pago() != null && !request.getEstado_pago().isBlank()) {
-            builder.estadoPago(EstadoPagoEnum.valueOf(request.getEstado_pago().toUpperCase()));
+        if (request.getEstadoPago() != null && !request.getEstadoPago().isBlank()) {
+            builder.estadoPago(EstadoPagoEnum.valueOf(request.getEstadoPago().toUpperCase()));
         }
 
         return builder.build();
@@ -61,23 +61,21 @@ public class OrdenServicioMapper {
             return;
         }
 
-        if (request.getMonto_total() != null) {
-            ordenServicio.setMontoTotal(request.getMonto_total());
+        if (request.getMontoTotal() != null) {
+            ordenServicio.setMontoTotal(request.getMontoTotal());
         }
         
-        if (request.getPdf_base64() != null) {
-            ordenServicio.setFacturaUrl(request.getPdf_base64());
-        } else if (request.getFactura_url() != null) {
-            ordenServicio.setFacturaUrl(request.getFactura_url());
+        if (request.getFacturaUrl() != null) {
+            ordenServicio.setFacturaUrl(request.getFacturaUrl());
         }
         
         if (request.getObservaciones() != null) {
             ordenServicio.setObservaciones(request.getObservaciones());
         }
 
-        if (request.getEstado_pago() != null && !request.getEstado_pago().isBlank()) {
+        if (request.getEstadoPago() != null && !request.getEstadoPago().isBlank()) {
             try {
-                ordenServicio.setEstadoPago(EstadoPagoEnum.valueOf(request.getEstado_pago().toUpperCase()));
+                ordenServicio.setEstadoPago(EstadoPagoEnum.valueOf(request.getEstadoPago().toUpperCase()));
             } catch (IllegalArgumentException e) {
                 // Ignore invalid status
             }
