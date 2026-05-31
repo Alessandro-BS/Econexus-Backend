@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,6 +48,10 @@ public class ReporteServiceImpl implements ReporteService {
         if (request.getTipoServicioId() == null) {
             throw new IllegalArgumentException("El tipo de servicio es obligatorio");
         }
+        if (request.getCantidad() != null && request.getCantidad().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("La cantidad del reporte debe ser mayor a cero");
+        }
+
 
         Cliente cliente = clienteRepository.findById(request.getClienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getClienteId()));
