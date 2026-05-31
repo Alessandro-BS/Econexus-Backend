@@ -42,6 +42,27 @@ public class OrdenServicioServiceImpl implements OrdenServicioService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<OrdenServicioResponse> filtrarPorEstadoPago(String estadoPago) {
+        EstadoPagoEnum estado = EstadoPagoEnum.valueOf(estadoPago.toUpperCase());
+        return ordenServicioRepository.findByEstadoPago(estado)
+                .stream()
+                .map(ordenServicioMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrdenServicioResponse> filtrarPorCliente(Long clienteId) {
+        clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + clienteId));
+        return ordenServicioRepository.findByClienteId(clienteId)
+                .stream()
+                .map(ordenServicioMapper::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public OrdenServicioResponse crearOrden(OrdenServicioRequest request) {
         if (request.getClienteId() == null) {
