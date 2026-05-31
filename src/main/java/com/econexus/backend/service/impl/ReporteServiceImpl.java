@@ -63,7 +63,12 @@ public class ReporteServiceImpl implements ReporteService {
         if (request.getOrdenServicioId() != null) {
             ordenServicio = ordenServicioRepository.findById(request.getOrdenServicioId())
                     .orElseThrow(() -> new ResourceNotFoundException("No se encontró la orden de servicio con ID: " + request.getOrdenServicioId()));
-        }
+            
+            if (ordenServicio.getTipoServicio() == null || 
+                !ordenServicio.getTipoServicio().getId().equals(request.getTipoServicioId())) {
+                throw new IllegalArgumentException("El tipo de servicio reportado no coincide con el contratado en la orden");
+            }
+                }
 
         Reporte reporte = reporteMapper.toEntity(request);
         reporte.setCliente(cliente);

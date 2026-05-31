@@ -7,6 +7,7 @@ import com.econexus.backend.mapper.OrdenServicioMapper;
 import com.econexus.backend.model.entity.Cliente;
 import com.econexus.backend.model.entity.OrdenServicio;
 import com.econexus.backend.model.entity.TipoServicio;
+import com.econexus.backend.model.enums.EstadoEnum;
 import com.econexus.backend.model.enums.EstadoPagoEnum;
 import com.econexus.backend.repository.ClienteRepository;
 import com.econexus.backend.repository.OrdenServicioRepository;
@@ -55,7 +56,9 @@ public class OrdenServicioServiceImpl implements OrdenServicioService {
 
         Cliente cliente = clienteRepository.findById(request.getClienteId())
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getClienteId()));
-
+            if (cliente.getEstado() == EstadoEnum.INACTIVO) {
+                throw new IllegalStateException("No se puede crear orden de servicio para un cliente inactivo");
+            }
         TipoServicio tipoServicio = null;
         if (request.getTipoServicioId() != null) {
             tipoServicio = tipoServicioRepository.findById(request.getTipoServicioId())
