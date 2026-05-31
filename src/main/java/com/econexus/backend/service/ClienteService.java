@@ -7,4 +7,7 @@ import java.util.List;
 public interface ClienteService {
     List<ClienteResponse> listarClientes();
     ClienteResponse crearCliente(ClienteRequest request);
+    List<ClienteResponse> buscarClientes(String query);
+    ClienteResponse editarCliente(Long id, ClienteRequest request);
+    void eliminarCliente(Long id);
 }

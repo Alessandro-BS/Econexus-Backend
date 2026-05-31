@@ -39,4 +39,28 @@ public class ClienteMapper {
                 .direccion(request.getDireccion())
                 .build();
     }
+    public void updateEntityFromRequest(ClienteRequest request, Cliente entity) {
+        if (request == null || entity == null) {
+            return;
+        }
+
+        if (request.getRazon_social() != null) {
+            entity.setRazonSocial(request.getRazon_social());
+        }
+        if (request.getRuc() != null) {
+            entity.setRuc(request.getRuc());
+        }
+        if (request.getContacto_principal() != null) {
+            entity.setContactoPrincipal(request.getContacto_principal());
+        }
+        if (request.getTelefono() != null) {
+            entity.setTelefono(request.getTelefono());
+        }
+        if (request.getEmail() != null) {
+            entity.setEmail(request.getEmail());
+        }
+        if (request.getDireccion() != null) {
+            entity.setDireccion(request.getDireccion());
+        }
+    }
 }
