@@ -24,6 +24,20 @@ public class OrdenServicioController {
         return ResponseEntity.ok(ordenes);
     }
 
+    @GetMapping("/filtrar")
+    public ResponseEntity<List<OrdenServicioResponse>> filtrarOrdenes(
+            @RequestParam(required = false) String estadoPago,
+            @RequestParam(required = false) Long clienteId) {
+
+        if (estadoPago != null) {
+            return ResponseEntity.ok(ordenServicioService.filtrarPorEstadoPago(estadoPago));
+        }
+        if (clienteId != null) {
+            return ResponseEntity.ok(ordenServicioService.filtrarPorCliente(clienteId));
+        }
+        return ResponseEntity.ok(ordenServicioService.listarOrdenes());
+    }  
+
     @PostMapping
     public ResponseEntity<OrdenServicioResponse> crearOrden(@Valid @RequestBody OrdenServicioRequest request) {
         OrdenServicioResponse ordenCreada = ordenServicioService.crearOrden(request);
