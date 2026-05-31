@@ -2,6 +2,10 @@ package com.econexus.backend.service.impl;
 
 import com.econexus.backend.dto.response.EstadisticasOrdenesResponse;
 import com.econexus.backend.dto.response.KpiResponse;
+import com.econexus.backend.model.enums.EstadoEnum;
+import com.econexus.backend.model.enums.EstadoPagoEnum;
+import com.econexus.backend.repository.ClienteRepository;
+import com.econexus.backend.repository.OrdenServicioRepository;
 import com.econexus.backend.service.DashboardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,22 +15,33 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class DashboardServiceImpl implements DashboardService {
 
+    private final ClienteRepository clienteRepository;
+    private final OrdenServicioRepository ordenServicioRepository;
+
     @Override
     public KpiResponse obtenerKpisDelNegocio() {
-        return KpiResponse.builder()
-                .totalClientesActivos(125)
-                .ordenesGeneradasMes(45)
-                .ingresosMensuales(new BigDecimal("15400.50"))
+        int clientesActivos = (int) clienteRepository.countByEstado(EstadoEnum.ACTIVO);
+        int ordenesMes = (int) ordenServicioRepository.countOrdenesMesActual();
+        BigDecimal ingresos = ordenServicioRepository.sumIngresosMesActual();
+
+         return KpiResponse.builder()
+                .totalClientesActivos(clientesActivos)
+                .ordenesGeneradasMes(ordenesMes)
+                .ingresosMensuales(ingresos)
                 .build();
     }
 
     @Override
     public EstadisticasOrdenesResponse obtenerEstadisticasTendencias() {
+        int pendientes = (int) ordenServicioRepository.countByEstadoPago(EstadoPagoEnum.PENDIENTE);
+        int pagadas    = (int) ordenServicioRepository.countByEstadoPago(EstadoPagoEnum.PAGADO);
+        int anuladas   = (int) ordenServicioRepository.countByEstadoPago(EstadoPagoEnum.ANULADO);
+
         return EstadisticasOrdenesResponse.builder()
-                .ordenesPendientes(12)
-                .ordenesEnProceso(8)
-                .ordenesCompletadas(25)
-                .tendenciaCrecimiento("+15% respecto al mes anterior")
+                .ordenesPendientes(pendientes)
+                .ordenesEnProceso(anuladas)
+                .ordenesCompletadas(pagadas)
+                .tendenciaCrecimiento("")
                 .build();
     }
-}
+} 
