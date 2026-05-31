@@ -5,6 +5,7 @@
 Backend RESTful desarrollado con Spring Boot + Java 17 para administrar, monitorear y optimizar los procesos de una empresa enfocada en servicios de saneamiento ambiental (Fumigación, Desinsectación, Manejo de Residuos Sólidos y Líquidos).
 
 > 🔗 **Frontend:** [Econexus Frontend (React + Vite)](https://github.com/Alessandro-BS/Econexus_Frontend) — Desplegado en [econexus-frontend.vercel.app](https://econexus-frontend.vercel.app)
+> 🔗 **Backend (API):** Desplegado en Render — [Swagger UI](https://econexus-backend-0aa6.onrender.com/swagger-ui.html)
 
 ---
 
@@ -15,10 +16,10 @@ Backend RESTful desarrollado con Spring Boot + Java 17 para administrar, monitor
 | Lenguaje | Java | 17 LTS |
 | Framework | Spring Boot | 3.2.5 |
 | Build Tool | Maven | 3.9+ |
-| Base de Datos | MySQL | 8.0 |
+| Base de Datos | MySQL (Aiven) | 8.0 |
 | Documentación API | SpringDoc OpenAPI (Swagger) | 2.3.0 |
 | Seguridad | Spring Security + JWT (jjwt) | 0.12.5 |
-| Deploy | Railway | — |
+| Deploy | Render | — |
 
 ### Dependencias principales
 
@@ -185,7 +186,7 @@ graph TB
         React["React 18 + Vite"]
     end
 
-    subgraph Backend["⚙️ Backend - Railway"]
+    subgraph Backend["⚙️ Backend - Render"]
         Controller["REST Controllers"]
         Service["Services"]
         Repository["JPA Repositories"]
@@ -193,7 +194,7 @@ graph TB
         Swagger["Swagger UI"]
     end
 
-    subgraph Database["🗄️ Base de Datos - Railway"]
+    subgraph Database["🗄️ Base de Datos - Aiven"]
         MySQL["MySQL 8.0"]
     end
 
@@ -213,16 +214,37 @@ graph TB
 |---|---|---|
 | RF-01 | Autenticación | Login con email/password, generación de JWT |
 | RF-02 | Autenticación | Control de acceso por roles (ADMIN, SUPERVISOR, OPERADOR) |
-| RF-03 | Usuarios | CRUD completo de usuarios del sistema |
-| RF-04 | Clientes | Crear, listar, editar y eliminar clientes (empresas contratantes) |
-| RF-05 | Proveedores | CRUD de proveedores con relación a tipo de servicio |
-| RF-06 | Tipos de Servicio | Catálogo de tipos de servicio/residuo |
-| RF-07 | Órdenes de Servicio | Gestión de órdenes vinculadas a clientes con estados de pago |
-| RF-08 | Reportes | Registro de cumplimiento post-servicio con estados |
-| RF-09 | Normativas | Registro de marco legal aplicable (independiente) |
-| RF-10 | Dashboard | Endpoint de KPIs: montos cobrados, órdenes generadas/pendientes, total clientes |
-| RF-11 | Búsqueda | Endpoint de búsqueda global multi-módulo |
-| RF-12 | Validación | Validación de datos de entrada en todos los endpoints |
+| RF-03 | Usuarios | Crear nuevos usuarios en el sistema |
+| RF-04 | Usuarios | Listar usuarios registrados |
+| RF-05 | Usuarios | Actualizar datos de usuarios |
+| RF-06 | Usuarios | Eliminar/Desactivar usuarios |
+| RF-07 | Clientes | Registrar clientes (empresas contratantes) |
+| RF-08 | Clientes | Listar clientes registrados |
+| RF-09 | Clientes | Actualizar datos de clientes |
+| RF-10 | Clientes | Eliminar clientes |
+| RF-11 | Proveedores | Registrar nuevos proveedores |
+| RF-12 | Proveedores | Listar proveedores y su relación a tipos de servicio |
+| RF-13 | Proveedores | Actualizar proveedores |
+| RF-14 | Proveedores | Eliminar proveedores |
+| RF-15 | Tipos de Servicio | Crear catálogo de tipos de servicio/residuo |
+| RF-16 | Tipos de Servicio | Listar tipos de servicio |
+| RF-17 | Tipos de Servicio | Actualizar tipos de servicio |
+| RF-18 | Tipos de Servicio | Eliminar tipos de servicio |
+| RF-19 | Órdenes de Servicio | Crear órdenes vinculadas a clientes |
+| RF-20 | Órdenes de Servicio | Listar órdenes de servicio |
+| RF-21 | Órdenes de Servicio | Actualizar órdenes y estados de pago |
+| RF-22 | Órdenes de Servicio | Anular/Eliminar órdenes de servicio |
+| RF-23 | Reportes | Crear reporte de cumplimiento post-servicio |
+| RF-24 | Reportes | Listar reportes generados |
+| RF-25 | Reportes | Actualizar estado de cumplimiento de reportes |
+| RF-26 | Reportes | Eliminar reportes |
+| RF-27 | Normativas | Registrar marco legal aplicable |
+| RF-28 | Normativas | Listar normativas |
+| RF-29 | Normativas | Actualizar normativas |
+| RF-30 | Normativas | Eliminar/Derogar normativas |
+| RF-31 | Dashboard | Endpoint de KPIs: montos cobrados, órdenes generadas/pendientes, total clientes |
+| RF-32 | Búsqueda | Endpoint de búsqueda global multi-módulo |
+| RF-33 | Validación | Validación de datos de entrada en todos los endpoints |
 
 ## 🔒 Requerimientos No Funcionales
 
@@ -231,7 +253,7 @@ graph TB
 | RNF-01 | Rendimiento | Tiempo de respuesta < 500ms para operaciones CRUD |
 | RNF-02 | Seguridad | Passwords hasheados con BCrypt, tokens JWT con expiración de 24h |
 | RNF-03 | Seguridad | CORS configurado exclusivamente para el dominio del frontend |
-| RNF-04 | Disponibilidad | Deploy en Railway con uptime ≥ 99% |
+| RNF-04 | Disponibilidad | Deploy en Render con uptime ≥ 99% |
 | RNF-05 | Escalabilidad | Arquitectura en capas (Controller → Service → Repository) |
 | RNF-06 | Mantenibilidad | Patrón DTO para desacoplar entidades de respuestas API |
 | RNF-07 | Documentación | API documentada con Swagger/OpenAPI accesible en `/swagger-ui.html` |
@@ -253,7 +275,18 @@ graph TB
 
 ---
 
-## 🌐 Endpoints REST
+## 🚀 Endpoints Desplegados y Funcionales (Prioridad)
+
+La API se encuentra desplegada en Render y documentada a través de Swagger. Puedes probarla en vivo aquí:
+👉 **[Swagger UI (Render)](https://econexus-backend-0aa6.onrender.com/swagger-ui.html)**
+
+### Endpoints Principales
+
+| Método | Endpoint | Descripción | Estado |
+|---|---|---|---|
+| `POST` | `/api/auth/login` | Inicio de sesión y generación de token JWT | ✅ Funcional |
+
+## 🌐 Resto de Endpoints (Planificados / En Desarrollo)
 
 | Método | Endpoint | Descripción | Rol mínimo |
 |---|---|---|---|
