@@ -33,5 +33,5 @@ public interface OrdenServicioRepository extends JpaRepository<OrdenServicio, Lo
        "AND YEAR(o.fechaEmision) = YEAR(CURRENT_DATE)")
     BigDecimal sumIngresosMesAnterior();
 
-    
+    boolean existsByTipoServicioIdAndEstadoPago(Long tipoServicioId, EstadoPagoEnum estadoPago);
 }

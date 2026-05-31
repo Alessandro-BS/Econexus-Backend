@@ -7,8 +7,11 @@ import com.econexus.backend.mapper.TipoServicioMapper;
 import com.econexus.backend.model.entity.TipoServicio;
 import com.econexus.backend.model.enums.CategoriaTipoServicioEnum;
 import com.econexus.backend.model.enums.EstadoEnum;
+import com.econexus.backend.repository.OrdenServicioRepository;
 import com.econexus.backend.repository.TipoServicioRepository;
 import com.econexus.backend.service.TipoServicioService;
+import com.econexus.backend.model.enums.EstadoPagoEnum;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +25,7 @@ public class TipoServicioServiceImpl implements TipoServicioService {
 
     private final TipoServicioRepository tipoServicioRepository;
     private final TipoServicioMapper tipoServicioMapper;
-
+    private final OrdenServicioRepository ordenServicioRepository;
     @Override
     @Transactional(readOnly = true)
     public List<TipoServicioResponse> listarTiposServicio() {
@@ -71,7 +74,12 @@ public class TipoServicioServiceImpl implements TipoServicioService {
         TipoServicio tipoServicio = tipoServicioRepository.findById(id)
                 .orElseThrow(() -> new com.econexus.backend.exception.ResourceNotFoundException("Tipo de servicio no encontrado con ID: " + id));
 
+        if (ordenServicioRepository.existsByTipoServicioIdAndEstadoPago(id, EstadoPagoEnum.PENDIENTE)) {
+            throw new IllegalStateException("No se puede eliminar un tipo de servicio que tiene órdenes pendientes");
+        }
+
         tipoServicio.setEstado(EstadoEnum.INACTIVO);
         tipoServicioRepository.save(tipoServicio);
     }
+
 }
