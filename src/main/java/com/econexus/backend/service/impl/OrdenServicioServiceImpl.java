@@ -43,33 +43,30 @@ public class OrdenServicioServiceImpl implements OrdenServicioService {
     @Override
     @Transactional
     public OrdenServicioResponse crearOrden(OrdenServicioRequest request) {
-        if (request.getCliente_id() == null) {
+        if (request.getClienteId() == null) {
             throw new IllegalArgumentException("El cliente es obligatorio");
         }
-        if (request.getMonto_total() == null) {
+        if (request.getMontoTotal() == null) {
             throw new IllegalArgumentException("El monto total es obligatorio");
         }
-        if (request.getMonto_total().compareTo(BigDecimal.ZERO) <= 0) {
+        if (request.getMontoTotal().compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El monto total debe ser mayor a cero");
         }
 
-        Cliente cliente = clienteRepository.findById(request.getCliente_id())
-                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getCliente_id()));
+        Cliente cliente = clienteRepository.findById(request.getClienteId())
+                .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getClienteId()));
 
         TipoServicio tipoServicio = null;
-        if (request.getTipo_servicio_id() != null) {
-            tipoServicio = tipoServicioRepository.findById(request.getTipo_servicio_id())
-                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de servicio con ID: " + request.getTipo_servicio_id()));
+        if (request.getTipoServicioId() != null) {
+            tipoServicio = tipoServicioRepository.findById(request.getTipoServicioId())
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de servicio con ID: " + request.getTipoServicioId()));
         }
 
         OrdenServicio orden = ordenServicioMapper.toEntity(request);
         orden.setCliente(cliente);
         orden.setTipoServicio(tipoServicio);
         orden.setFechaEmision(LocalDateTime.now());
-
-        // Generar el número de orden automático
-        String numeroOrden = generarNumeroOrden();
-        orden.setNumeroOrden(numeroOrden);
+        orden.setNumeroOrden(request.getNumeroOrden());
 
         OrdenServicio guardada = ordenServicioRepository.save(orden);
         return ordenServicioMapper.toResponse(guardada);
@@ -81,15 +78,15 @@ public class OrdenServicioServiceImpl implements OrdenServicioService {
         OrdenServicio orden = ordenServicioRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró la orden de servicio con ID: " + id));
 
-        if (request.getCliente_id() != null) {
-            Cliente cliente = clienteRepository.findById(request.getCliente_id())
-                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getCliente_id()));
+        if (request.getClienteId() != null) {
+            Cliente cliente = clienteRepository.findById(request.getClienteId())
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el cliente con ID: " + request.getClienteId()));
             orden.setCliente(cliente);
         }
 
-        if (request.getTipo_servicio_id() != null) {
-            TipoServicio tipoServicio = tipoServicioRepository.findById(request.getTipo_servicio_id())
-                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de servicio con ID: " + request.getTipo_servicio_id()));
+        if (request.getTipoServicioId() != null) {
+            TipoServicio tipoServicio = tipoServicioRepository.findById(request.getTipoServicioId())
+                    .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de servicio con ID: " + request.getTipoServicioId()));
             orden.setTipoServicio(tipoServicio);
         }
 
@@ -109,23 +106,4 @@ public class OrdenServicioServiceImpl implements OrdenServicioService {
         ordenServicioRepository.save(orden);
     }
 
-    private String generarNumeroOrden() {
-        int year = LocalDate.now().getYear();
-        String pattern = "OS-" + year + "-%";
-        Optional<String> maxOrden = ordenServicioRepository.findMaxNumeroOrdenByPattern(pattern);
-
-        int seq = 1;
-        if (maxOrden.isPresent()) {
-            String maxStr = maxOrden.get();
-            String[] parts = maxStr.split("-");
-            if (parts.length == 3) {
-                try {
-                    seq = Integer.parseInt(parts[2]) + 1;
-                } catch (NumberFormatException e) {
-                    // Fallback a 1 si no se puede parsear
-                }
-            }
-        }
-        return String.format("OS-%d-%04d", year, seq);
-    }
 }

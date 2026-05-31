@@ -2,16 +2,12 @@ package com.econexus.backend.controller.api;
 
 import com.econexus.backend.dto.request.NormativaRequest;
 import com.econexus.backend.dto.response.NormativaResponse;
-import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import com.econexus.backend.service.NormativaService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,5 +28,19 @@ public class NormativaController {
     public ResponseEntity<NormativaResponse> crearNormativa(@Valid @RequestBody NormativaRequest request) {
         NormativaResponse creada = normativaService.crearNormativa(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(creada);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<NormativaResponse> editarNormativa(
+            @PathVariable Long id,
+            @Valid @RequestBody NormativaRequest request) {
+        NormativaResponse actualizada = normativaService.editarNormativa(id, request);
+        return ResponseEntity.ok(actualizada);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarNormativa(@PathVariable Long id) {
+        normativaService.eliminarNormativa(id);
+        return ResponseEntity.noContent().build();
     }
 }

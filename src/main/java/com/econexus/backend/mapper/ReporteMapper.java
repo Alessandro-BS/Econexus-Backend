@@ -19,17 +19,17 @@ public class ReporteMapper {
                 .descripcion(request.getDescripcion())
                 .cantidad(request.getCantidad());
 
-        if (request.getUnidad_medida() != null && !request.getUnidad_medida().isBlank()) {
+        if (request.getUnidadMedida() != null && !request.getUnidadMedida().isBlank()) {
             try {
-                builder.unidadMedida(UnidadMedidaEnum.valueOf(request.getUnidad_medida().toUpperCase()));
+                builder.unidadMedida(UnidadMedidaEnum.valueOf(request.getUnidadMedida().toUpperCase()));
             } catch (IllegalArgumentException e) {
                 // Ignore invalid enum
             }
         }
 
-        if (request.getEstado_cumplimiento() != null && !request.getEstado_cumplimiento().isBlank()) {
+        if (request.getEstadoCumplimiento() != null && !request.getEstadoCumplimiento().isBlank()) {
             try {
-                builder.estadoCumplimiento(EstadoCumplimientoEnum.valueOf(request.getEstado_cumplimiento().toUpperCase()));
+                builder.estadoCumplimiento(EstadoCumplimientoEnum.valueOf(request.getEstadoCumplimiento().toUpperCase()));
             } catch (IllegalArgumentException e) {
                 // Ignore invalid enum
             }
@@ -83,17 +83,17 @@ public class ReporteMapper {
             reporte.setCantidad(request.getCantidad());
         }
 
-        if (request.getUnidad_medida() != null && !request.getUnidad_medida().isBlank()) {
+        if (request.getUnidadMedida() != null && !request.getUnidadMedida().isBlank()) {
             try {
-                reporte.setUnidadMedida(UnidadMedidaEnum.valueOf(request.getUnidad_medida().toUpperCase()));
+                reporte.setUnidadMedida(UnidadMedidaEnum.valueOf(request.getUnidadMedida().toUpperCase()));
             } catch (IllegalArgumentException e) {
                 // Ignore invalid values
             }
         }
 
-        if (request.getEstado_cumplimiento() != null && !request.getEstado_cumplimiento().isBlank()) {
+        if (request.getEstadoCumplimiento() != null && !request.getEstadoCumplimiento().isBlank()) {
             try {
-                reporte.setEstadoCumplimiento(EstadoCumplimientoEnum.valueOf(request.getEstado_cumplimiento().toUpperCase()));
+                reporte.setEstadoCumplimiento(EstadoCumplimientoEnum.valueOf(request.getEstadoCumplimiento().toUpperCase()));
             } catch (IllegalArgumentException e) {
                 // Ignore invalid values
             }

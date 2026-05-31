@@ -46,4 +46,19 @@ public class NormativaMapper {
         }
         return normativa;
     }
+
+    public void updateEntityFromRequest(NormativaRequest request, Normativa normativa) {
+        if (request == null || normativa == null) return;
+
+        if (request.getTitulo() != null) normativa.setTitulo(request.getTitulo());
+        if (request.getDescripcion() != null) normativa.setDescripcion(request.getDescripcion());
+        if (request.getFecha_publicacion() != null && !request.getFecha_publicacion().isBlank()) {
+            normativa.setFechaPublicacion(LocalDate.parse(request.getFecha_publicacion()));
+        }
+        if (request.getEntidad_emisora() != null) normativa.setEntidadEmisora(request.getEntidad_emisora());
+        if (request.getUrl_documento() != null) normativa.setUrlDocumento(request.getUrl_documento());
+        if (request.getEstado() != null) {
+            normativa.setEstado(EstadoNormativaEnum.valueOf(request.getEstado().trim().toUpperCase()));
+        }
+    }
 }
