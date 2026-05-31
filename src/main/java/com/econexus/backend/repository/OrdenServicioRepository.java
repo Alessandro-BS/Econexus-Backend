@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -34,4 +35,8 @@ public interface OrdenServicioRepository extends JpaRepository<OrdenServicio, Lo
     BigDecimal sumIngresosMesAnterior();
 
     boolean existsByTipoServicioIdAndEstadoPago(Long tipoServicioId, EstadoPagoEnum estadoPago);
+    
+    List<OrdenServicio> findByEstadoPago(EstadoPagoEnum estadoPago);
+    List<OrdenServicio> findByClienteId(Long clienteId);
+
 }
