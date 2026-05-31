@@ -28,6 +28,21 @@ public class ReporteController {
         return ResponseEntity.ok(reportes);
     }
 
+    @GetMapping("/filtrar")
+    @Operation(summary = "Filtrar reportes", description = "Filtra reportes por estado de cumplimiento o por cliente.")
+    public ResponseEntity<List<ReporteResponse>> filtrarReportes(
+            @RequestParam(required = false) String estado,
+            @RequestParam(required = false) Long clienteId) {
+
+        if (estado != null) {
+            return ResponseEntity.ok(reporteService.filtrarPorEstado(estado));
+        }
+        if (clienteId != null) {
+            return ResponseEntity.ok(reporteService.filtrarPorCliente(clienteId));
+        }
+        return ResponseEntity.ok(reporteService.listarReportes());
+    }
+
     @PostMapping
     @Operation(summary = "Crear reporte", description = "Rol mínimo requerido: OPERADOR. Registra el cumplimiento de un servicio.")
     public ResponseEntity<ReporteResponse> crearReporte(@Valid @RequestBody ReporteRequest request) {
