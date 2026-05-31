@@ -10,6 +10,7 @@ import com.econexus.backend.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.econexus.backend.exception.DuplicateResourceException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +34,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional
     public ClienteResponse crearCliente(ClienteRequest request) {
+        if (clienteRepository.existsByRuc(request.getRuc())) {
+            throw new DuplicateResourceException("Ya existe un cliente registrado con el RUC: " + request.getRuc());
+        }  
         Cliente cliente = clienteMapper.toEntity(request);
         cliente = clienteRepository.save(cliente);
         return clienteMapper.toResponse(cliente);
@@ -57,9 +61,8 @@ public class ClienteServiceImpl implements ClienteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente no encontrado con ID: " + id)); 
         
         // Check uniqueness if ruc changed
-        if (!cliente.getRuc().equals(request.getRuc())) {
-            // we should ideally check if the new ruc is already taken, but there's no existsByRuc method shown. 
-            // the database constraint will throw an exception if it's a duplicate.
+        if (!cliente.getRuc().equals(request.getRuc()) && clienteRepository.existsByRuc(request.getRuc())) {
+            throw new DuplicateResourceException("Ya existe un cliente registrado con el RUC: " + request.getRuc());
         }
 
         clienteMapper.updateEntityFromRequest(request, cliente);
