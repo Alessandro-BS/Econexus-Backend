@@ -3,32 +3,71 @@ package com.econexus.backend.mapper;
 import com.econexus.backend.dto.request.UsuarioRequest;
 import com.econexus.backend.dto.response.UsuarioResponse;
 import com.econexus.backend.model.entity.Usuario;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
-public interface UsuarioMapper {
+@Component
+public class UsuarioMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "passwordHash", ignore = true) // Will be set manually
-    @Mapping(target = "estado", ignore = true) // Handled by PrePersist or manually
-    @Mapping(target = "ultimoLogin", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    Usuario toEntity(UsuarioRequest request);
+    public Usuario toEntity(UsuarioRequest request) {
+        if (request == null) {
+            return null;
+        }
 
-    UsuarioResponse toResponse(Usuario entity);
+        return Usuario.builder()
+                .nombreCompleto(request.getNombreCompleto())
+                .email(request.getEmail())
+                .telefono(request.getTelefono())
+                .rol(request.getRol())
+                .build();
+    }
 
-    List<UsuarioResponse> toResponseList(List<Usuario> entities);
+    public UsuarioResponse toResponse(Usuario entity) {
+        if (entity == null) {
+            return null;
+        }
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "passwordHash", ignore = true) // Only updated if provided separately
-    @Mapping(target = "estado", ignore = true)
-    @Mapping(target = "ultimoLogin", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    @Mapping(target = "updatedAt", ignore = true)
-    void updateEntityFromRequest(UsuarioRequest request, @MappingTarget Usuario entity);
+        UsuarioResponse response = new UsuarioResponse();
+        response.setId(entity.getId());
+        response.setNombreCompleto(entity.getNombreCompleto());
+        response.setEmail(entity.getEmail());
+        response.setTelefono(entity.getTelefono());
+        response.setRol(entity.getRol());
+        response.setEstado(entity.getEstado());
+        response.setUltimoLogin(entity.getUltimoLogin());
+        response.setCreatedAt(entity.getCreatedAt());
+        response.setUpdatedAt(entity.getUpdatedAt());
+        
+        return response;
+    }
+
+    public List<UsuarioResponse> toResponseList(List<Usuario> entities) {
+        if (entities == null) {
+            return null;
+        }
+        return entities.stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public void updateEntityFromRequest(UsuarioRequest request, Usuario entity) {
+        if (request == null || entity == null) {
+            return;
+        }
+        
+        if (request.getNombreCompleto() != null) {
+            entity.setNombreCompleto(request.getNombreCompleto());
+        }
+        if (request.getEmail() != null) {
+            entity.setEmail(request.getEmail());
+        }
+        if (request.getTelefono() != null) {
+            entity.setTelefono(request.getTelefono());
+        }
+        if (request.getRol() != null) {
+            entity.setRol(request.getRol());
+        }
+    }
 }
