@@ -16,4 +16,6 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Query("SELECT c FROM Cliente c WHERE (LOWER(c.razonSocial) LIKE LOWER(CONCAT('%', :query, '%')) OR c.ruc LIKE CONCAT('%', :query, '%')) AND c.estado = 'ACTIVO'")
     List<Cliente> buscarClientes(@Param("query") String query);
     long countByEstado(EstadoEnum estado);
+
+boolean existsByRuc(String ruc);
 }
