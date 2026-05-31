@@ -50,7 +50,10 @@ public class NormativaServiceImpl implements NormativaService {
     public NormativaResponse editarNormativa(Long id, NormativaRequest request) {
         Normativa normativa = normativaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Normativa no encontrada con ID: " + id));
-
+        if (!normativa.getCodigo().equalsIgnoreCase(request.getCodigo()) && 
+            normativaRepository.existsByCodigoIgnoreCase(request.getCodigo())) {
+            throw new DuplicateResourceException("Ya existe una normativa registrada con el código: " + request.getCodigo());
+        }
         normativaMapper.updateEntityFromRequest(request, normativa);
         normativa = normativaRepository.save(normativa);
         return normativaMapper.toResponse(normativa);
