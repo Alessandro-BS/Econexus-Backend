@@ -47,24 +47,24 @@ public class ReporteMapper {
                 .id(reporte.getId())
                 .descripcion(reporte.getDescripcion())
                 .cantidad(reporte.getCantidad())
-                .unidad_medida(reporte.getUnidadMedida() != null ? reporte.getUnidadMedida().name() : null)
-                .estado_cumplimiento(reporte.getEstadoCumplimiento() != null ? reporte.getEstadoCumplimiento().name() : null)
-                .created_at(reporte.getCreatedAt())
-                .updated_at(reporte.getUpdatedAt());
+                .unidadMedida(reporte.getUnidadMedida() != null ? reporte.getUnidadMedida().name() : null)
+                .estadoCumplimiento(reporte.getEstadoCumplimiento() != null ? reporte.getEstadoCumplimiento().name() : null)
+                .createdAt(reporte.getCreatedAt())
+                .updatedAt(reporte.getUpdatedAt());
 
         if (reporte.getCliente() != null) {
-            builder.cliente_id(reporte.getCliente().getId());
-            builder.cliente_nombre(reporte.getCliente().getRazonSocial());
+            builder.clienteId(reporte.getCliente().getId());
+            builder.clienteNombre(reporte.getCliente().getRazonSocial());
         }
 
         if (reporte.getTipoServicio() != null) {
-            builder.tipo_servicio_id(reporte.getTipoServicio().getId());
-            builder.tipo_servicio_nombre(reporte.getTipoServicio().getNombre());
+            builder.tipoServicioId(reporte.getTipoServicio().getId());
+            builder.tipoServicioNombre(reporte.getTipoServicio().getNombre());
         }
 
         if (reporte.getOrdenServicio() != null) {
-            builder.orden_servicio_id(reporte.getOrdenServicio().getId());
-            builder.numero_orden(reporte.getOrdenServicio().getNumeroOrden());
+            builder.ordenServicioId(reporte.getOrdenServicio().getId());
+            builder.numeroOrden(reporte.getOrdenServicio().getNumeroOrden());
         }
 
         return builder.build();

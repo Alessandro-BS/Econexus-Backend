@@ -14,16 +14,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ReporteResponse {
     private Long id;
-    private Long cliente_id;
-    private String cliente_nombre;
-    private Long tipo_servicio_id;
-    private String tipo_servicio_nombre;
-    private Long orden_servicio_id;
-    private String numero_orden;
+    private Long clienteId;
+    private String clienteNombre;
+    private Long tipoServicioId;
+    private String tipoServicioNombre;
+    private Long ordenServicioId;
+    private String numeroOrden;
     private String descripcion;
     private BigDecimal cantidad;
-    private String unidad_medida;
-    private String estado_cumplimiento;
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
+    private String unidadMedida;
+    private String estadoCumplimiento;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
