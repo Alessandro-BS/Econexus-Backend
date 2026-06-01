@@ -42,12 +42,16 @@ public class AuthController {
 
             // Actualizar ultimo login
             Usuario usuario = usuarioRepository.findByEmail(loginRequest.getEmail()).orElse(null);
+            String nombreCompleto = "";
+            String rol = "";
             if (usuario != null) {
                 usuario.setUltimoLogin(LocalDateTime.now());
                 usuarioRepository.save(usuario);
+                nombreCompleto = usuario.getNombreCompleto();
+                rol = usuario.getRol().name();
             }
 
-            return ResponseEntity.ok(new AuthResponse(jwt));
+            return ResponseEntity.ok(new AuthResponse(jwt, nombreCompleto, rol));
             
         } catch (org.springframework.security.authentication.BadCredentialsException ex) {
             return ResponseEntity.status(org.springframework.http.HttpStatus.UNAUTHORIZED).build();
