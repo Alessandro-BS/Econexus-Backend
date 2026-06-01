@@ -15,9 +15,9 @@ public class ClienteMapper {
         
         return ClienteResponse.builder()
                 .id(cliente.getId())
-                .razon_social(cliente.getRazonSocial())
+                .razonSocial(cliente.getRazonSocial())
                 .ruc(cliente.getRuc())
-                .contacto_principal(cliente.getContactoPrincipal())
+                .contactoPrincipal(cliente.getContactoPrincipal())
                 .telefono(cliente.getTelefono())
                 .email(cliente.getEmail())
                 .direccion(cliente.getDireccion())
@@ -31,9 +31,9 @@ public class ClienteMapper {
         }
 
         return Cliente.builder()
-                .razonSocial(request.getRazon_social())
+                .razonSocial(request.getRazonSocial())
                 .ruc(request.getRuc())
-                .contactoPrincipal(request.getContacto_principal())
+                .contactoPrincipal(request.getContactoPrincipal())
                 .telefono(request.getTelefono())
                 .email(request.getEmail())
                 .direccion(request.getDireccion())
@@ -44,14 +44,14 @@ public class ClienteMapper {
             return;
         }
 
-        if (request.getRazon_social() != null) {
-            entity.setRazonSocial(request.getRazon_social());
+        if (request.getRazonSocial() != null) {
+            entity.setRazonSocial(request.getRazonSocial());
         }
         if (request.getRuc() != null) {
             entity.setRuc(request.getRuc());
         }
-        if (request.getContacto_principal() != null) {
-            entity.setContactoPrincipal(request.getContacto_principal());
+        if (request.getContactoPrincipal() != null) {
+            entity.setContactoPrincipal(request.getContactoPrincipal());
         }
         if (request.getTelefono() != null) {
             entity.setTelefono(request.getTelefono());

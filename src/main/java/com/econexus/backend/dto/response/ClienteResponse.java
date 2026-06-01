@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClienteResponse {
     private Long id;
-    private String razon_social;
+    private String razonSocial;
     private String ruc;
-    private String contacto_principal;
+    private String contactoPrincipal;
     private String telefono;
     private String email;
     private String direccion;
