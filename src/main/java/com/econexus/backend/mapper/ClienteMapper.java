@@ -62,5 +62,8 @@ public class ClienteMapper {
         if (request.getDireccion() != null) {
             entity.setDireccion(request.getDireccion());
         }
+        if (request.getEstado() != null) {
+            entity.setEstado(request.getEstado());
+        }
     }
 }

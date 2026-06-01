@@ -27,14 +27,14 @@ public class NormativaRequest {
 
     @NotBlank(message = "La fecha de publicación es obligatoria (YYYY-MM-DD)")
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "La fecha debe tener formato YYYY-MM-DD")
-    private String fecha_publicacion;
+    private String fechaPublicacion;
 
     @NotBlank(message = "La entidad emisora es obligatoria")
     @Size(max = 100, message = "La entidad emisora no puede tener más de 100 caracteres")
-    private String entidad_emisora;
+    private String entidadEmisora;
 
     @Size(max = 500, message = "La URL no puede exceder 500 caracteres")
-    private String url_documento;
+    private String urlDocumento;
 
     // opcional: VIGENTE o DEROGADA; si se omite, se asigna VIGENTE en la entidad
     private String estado;

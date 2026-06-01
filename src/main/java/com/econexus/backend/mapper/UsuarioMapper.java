@@ -69,5 +69,8 @@ public class UsuarioMapper {
         if (request.getRol() != null) {
             entity.setRol(request.getRol());
         }
+        if (request.getEstado() != null) {
+            entity.setEstado(request.getEstado());
+        }
     }
 }

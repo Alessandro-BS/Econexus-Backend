@@ -27,4 +27,6 @@ public class UsuarioRequest {
 
     @NotNull(message = "El rol es obligatorio")
     private RolEnum rol;
+
+    private com.econexus.backend.model.enums.EstadoEnum estado;
 }
