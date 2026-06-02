@@ -1,9 +1,12 @@
 package com.econexus.backend.config;
 
 import com.econexus.backend.model.entity.Usuario;
+import com.econexus.backend.model.entity.TipoServicio;
+import com.econexus.backend.model.enums.CategoriaTipoServicioEnum;
 import com.econexus.backend.model.enums.RolEnum;
 import com.econexus.backend.model.enums.EstadoEnum;
 import com.econexus.backend.repository.UsuarioRepository;
+import com.econexus.backend.repository.TipoServicioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +21,7 @@ import java.util.List;
 public class DataSeeder implements CommandLineRunner {
 
     private final UsuarioRepository usuarioRepository;
+    private final TipoServicioRepository tipoServicioRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -73,6 +77,19 @@ public class DataSeeder implements CommandLineRunner {
 
             usuarioRepository.saveAll(initialUsers);
             System.out.println("Usuarios iniciales del equipo creados exitosamente.");
+        }
+
+        if (tipoServicioRepository.count() == 0) {
+            List<TipoServicio> initialTipos = Arrays.asList(
+                TipoServicio.builder().nombre("Sólido Peligroso").categoria(CategoriaTipoServicioEnum.SOLIDO_PELIGROSO).estado(EstadoEnum.ACTIVO).build(),
+                TipoServicio.builder().nombre("Líquido").categoria(CategoriaTipoServicioEnum.LIQUIDO).estado(EstadoEnum.ACTIVO).build(),
+                TipoServicio.builder().nombre("Fumigación").categoria(CategoriaTipoServicioEnum.FUMIGACION).estado(EstadoEnum.ACTIVO).build(),
+                TipoServicio.builder().nombre("Desinfección").categoria(CategoriaTipoServicioEnum.DESINFECCION).estado(EstadoEnum.ACTIVO).build(),
+                TipoServicio.builder().nombre("Desinsectación").categoria(CategoriaTipoServicioEnum.DESINSECTACION).estado(EstadoEnum.ACTIVO).build(),
+                TipoServicio.builder().nombre("Sólido No Peligroso").categoria(CategoriaTipoServicioEnum.SOLIDO_NO_PELIGROSO).estado(EstadoEnum.ACTIVO).build()
+            );
+            tipoServicioRepository.saveAll(initialTipos);
+            System.out.println("Tipos de servicio iniciales creados exitosamente.");
         }
     }
 }
