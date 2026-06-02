@@ -15,14 +15,14 @@ import lombok.NoArgsConstructor;
 public class ClienteRequest {
 
     @NotBlank(message = "La razón social es obligatoria")
-    private String razon_social;
+    private String razonSocial;
 
     @NotBlank(message = "El RUC es obligatorio")
     @Size(min = 11, max = 11, message = "El RUC debe tener exactamente 11 dígitos")
     private String ruc;
 
     @NotBlank(message = "El contacto principal es obligatorio")
-    private String contacto_principal;
+    private String contactoPrincipal;
 
     @NotBlank(message = "El teléfono es obligatorio")
     private String telefono;
@@ -34,6 +34,5 @@ public class ClienteRequest {
     @NotBlank(message = "La dirección es obligatoria")
     private String direccion;
 
-    // Nota: El estado se maneja internamente o tiene su propio endpoint (generalmente)
-    // Pero si se envía al crear/actualizar, se podría incluir aquí.
+    private com.econexus.backend.model.enums.EstadoEnum estado;
 }

@@ -15,8 +15,8 @@ public class NormativaResponse {
     private String codigo;
     private String titulo;
     private String descripcion;
-    private String fecha_publicacion;
-    private String entidad_emisora;
-    private String url_documento;
+    private String fechaPublicacion;
+    private String entidadEmisora;
+    private String urlDocumento;
     private String estado;
 }

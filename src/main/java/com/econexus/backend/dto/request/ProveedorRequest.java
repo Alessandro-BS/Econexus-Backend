@@ -28,4 +28,6 @@ public class ProveedorRequest {
     private String direccion;
 
     private Long tipoServicioId;
+
+    private String estado;
 }

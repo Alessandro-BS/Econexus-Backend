@@ -21,9 +21,9 @@ public class NormativaMapper {
                 .codigo(normativa.getCodigo())
                 .titulo(normativa.getTitulo())
                 .descripcion(normativa.getDescripcion())
-                .fecha_publicacion(normativa.getFechaPublicacion() != null ? normativa.getFechaPublicacion().toString() : null)
-                .entidad_emisora(normativa.getEntidadEmisora())
-                .url_documento(normativa.getUrlDocumento())
+                .fechaPublicacion(normativa.getFechaPublicacion() != null ? normativa.getFechaPublicacion().toString() : null)
+                .entidadEmisora(normativa.getEntidadEmisora())
+                .urlDocumento(normativa.getUrlDocumento())
                 .estado(normativa.getEstado() != null ? normativa.getEstado().name() : null)
                 .build();
     }
@@ -35,12 +35,12 @@ public class NormativaMapper {
         normativa.setCodigo(request.getCodigo().trim());
         normativa.setTitulo(request.getTitulo());
         normativa.setDescripcion(request.getDescripcion());
-        // parse fecha_publicacion (expected YYYY-MM-DD)
-        if (request.getFecha_publicacion() != null && !request.getFecha_publicacion().isBlank()) {
-            normativa.setFechaPublicacion(LocalDate.parse(request.getFecha_publicacion()));
+        // parse fechaPublicacion (expected YYYY-MM-DD)
+        if (request.getFechaPublicacion() != null && !request.getFechaPublicacion().isBlank()) {
+            normativa.setFechaPublicacion(LocalDate.parse(request.getFechaPublicacion()));
         }
-        normativa.setEntidadEmisora(request.getEntidad_emisora());
-        normativa.setUrlDocumento(request.getUrl_documento());
+        normativa.setEntidadEmisora(request.getEntidadEmisora());
+        normativa.setUrlDocumento(request.getUrlDocumento());
         if (request.getEstado() != null) {
             normativa.setEstado(EstadoNormativaEnum.valueOf(request.getEstado().trim().toUpperCase()));
         }
@@ -52,11 +52,11 @@ public class NormativaMapper {
 
         if (request.getTitulo() != null) normativa.setTitulo(request.getTitulo());
         if (request.getDescripcion() != null) normativa.setDescripcion(request.getDescripcion());
-        if (request.getFecha_publicacion() != null && !request.getFecha_publicacion().isBlank()) {
-            normativa.setFechaPublicacion(LocalDate.parse(request.getFecha_publicacion()));
+        if (request.getFechaPublicacion() != null && !request.getFechaPublicacion().isBlank()) {
+            normativa.setFechaPublicacion(LocalDate.parse(request.getFechaPublicacion()));
         }
-        if (request.getEntidad_emisora() != null) normativa.setEntidadEmisora(request.getEntidad_emisora());
-        if (request.getUrl_documento() != null) normativa.setUrlDocumento(request.getUrl_documento());
+        if (request.getEntidadEmisora() != null) normativa.setEntidadEmisora(request.getEntidadEmisora());
+        if (request.getUrlDocumento() != null) normativa.setUrlDocumento(request.getUrlDocumento());
         if (request.getEstado() != null) {
             normativa.setEstado(EstadoNormativaEnum.valueOf(request.getEstado().trim().toUpperCase()));
         }
