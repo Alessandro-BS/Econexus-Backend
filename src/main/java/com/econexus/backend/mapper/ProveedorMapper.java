@@ -61,5 +61,9 @@ public class ProveedorMapper {
         proveedor.setDireccion(request.getDireccion());
         // El RUC puede o no ser actualizable dependiendo de las reglas, normalmente sí.
         proveedor.setRuc(request.getRuc());
+
+        if (request.getEstado() != null) {
+            proveedor.setEstado(com.econexus.backend.model.enums.EstadoEnum.valueOf(request.getEstado().toUpperCase()));
+        }
     }
 }
