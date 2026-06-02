@@ -5,6 +5,8 @@ import com.econexus.backend.dto.response.AuthResponse;
 import com.econexus.backend.model.entity.Usuario;
 import com.econexus.backend.repository.UsuarioRepository;
 import com.econexus.backend.security.jwt.JwtTokenProvider;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/auth")
+@Tag(name = "Autenticación", description = "Endpoints para autenticación y obtención de tokens JWT")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -26,6 +29,7 @@ public class AuthController {
     private final UsuarioRepository usuarioRepository;
 
     @PostMapping("/login")
+    @Operation(summary = "Iniciar sesión", description = "Autentica al usuario y devuelve un token JWT")
     public ResponseEntity<AuthResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         try {

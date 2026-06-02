@@ -4,6 +4,8 @@ import com.econexus.backend.repository.ClienteRepository;
 import com.econexus.backend.repository.OrdenServicioRepository;
 import com.econexus.backend.repository.ProveedorRepository;
 import com.econexus.backend.repository.ReporteRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/cleanup")
+@Tag(name = "Limpieza", description = "Operaciones de limpieza de datos de prueba")
 @RequiredArgsConstructor
 public class DatabaseCleanupController {
 
@@ -20,6 +23,7 @@ public class DatabaseCleanupController {
     private final ProveedorRepository proveedorRepository;
     private final ReporteRepository reporteRepository;
 
+    @Operation(summary = "Borrar datos de prueba", description = "Elimina datos de clientes, órdenes, proveedores y reportes de prueba")
     @DeleteMapping("/wipe-data")
     public ResponseEntity<String> wipeData() {
         // The order of deletion is important to avoid foreign key constraint violations

@@ -25,6 +25,13 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
+    operationsSorter: alpha
+    tagsSorter: alpha
+    docExpansion: none
+    defaultModelsExpandDepth: -1
+    displayRequestDuration: true
+    filter: true
+    deepLinking: true
 
 app:
   cors:
