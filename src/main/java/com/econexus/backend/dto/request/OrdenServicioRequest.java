@@ -29,6 +29,7 @@ public class OrdenServicioRequest {
 
     private String estadoPago;  // PENDIENTE | PAGADO | ANULADO (default: PENDIENTE)
 
+    @NotBlank(message = "El archivo PDF de la orden es obligatorio")
     private String facturaUrl;
 
     private String observaciones;
