@@ -57,7 +57,12 @@ public class TipoServicioServiceImpl implements TipoServicioService {
         TipoServicio tipoServicio = tipoServicioRepository.findById(id)
                 .orElseThrow(() -> new com.econexus.backend.exception.ResourceNotFoundException("Tipo de servicio no encontrado con ID: " + id));
 
-        tipoServicio.setNombre(request.getNombre().trim());
+        String nombreNormalizado = request.getNombre().trim();
+        if (!tipoServicio.getNombre().equalsIgnoreCase(nombreNormalizado) && tipoServicioRepository.existsByNombreIgnoreCase(nombreNormalizado)) {
+            throw new DuplicateResourceException("Tipo de servicio", "nombre", nombreNormalizado);
+        }
+
+        tipoServicio.setNombre(nombreNormalizado);
         tipoServicio.setCategoria(CategoriaTipoServicioEnum.valueOf(request.getCategoria().trim().toUpperCase()));
         tipoServicio.setDescripcion(request.getDescripcion());
 
