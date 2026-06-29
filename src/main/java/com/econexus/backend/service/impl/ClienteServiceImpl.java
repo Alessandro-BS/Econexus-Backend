@@ -3,6 +3,7 @@ package com.econexus.backend.service.impl;
 import com.econexus.backend.dto.request.ClienteRequest;
 import com.econexus.backend.dto.response.ClienteResponse;
 import com.econexus.backend.exception.ResourceNotFoundException;
+import com.econexus.backend.exception.DuplicateResourceException;
 import com.econexus.backend.mapper.ClienteMapper;
 import com.econexus.backend.model.entity.Cliente;
 import com.econexus.backend.repository.ClienteRepository;
@@ -33,6 +34,10 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional
     public ClienteResponse crearCliente(ClienteRequest request) {
+        if (clienteRepository.existsByRuc(request.getRuc())) {
+            throw new DuplicateResourceException("Cliente", "ruc", request.getRuc());
+        }
+        
         Cliente cliente = clienteMapper.toEntity(request);
         cliente = clienteRepository.save(cliente);
         return clienteMapper.toResponse(cliente);
@@ -58,8 +63,9 @@ public class ClienteServiceImpl implements ClienteService {
         
         // Check uniqueness if ruc changed
         if (!cliente.getRuc().equals(request.getRuc())) {
-            // we should ideally check if the new ruc is already taken, but there's no existsByRuc method shown. 
-            // the database constraint will throw an exception if it's a duplicate.
+            if (clienteRepository.existsByRuc(request.getRuc())) {
+                throw new DuplicateResourceException("Cliente", "ruc", request.getRuc());
+            }
         }
 
         clienteMapper.updateEntityFromRequest(request, cliente);

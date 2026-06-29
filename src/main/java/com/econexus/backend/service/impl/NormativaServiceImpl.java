@@ -51,6 +51,11 @@ public class NormativaServiceImpl implements NormativaService {
         Normativa normativa = normativaRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Normativa no encontrada con ID: " + id));
 
+        String codigo = request.getCodigo().trim();
+        if (!normativa.getCodigo().equalsIgnoreCase(codigo) && normativaRepository.existsByCodigoIgnoreCase(codigo)) {
+            throw new DuplicateResourceException("Normativa", "codigo", codigo);
+        }
+
         normativaMapper.updateEntityFromRequest(request, normativa);
         normativa = normativaRepository.save(normativa);
         return normativaMapper.toResponse(normativa);
