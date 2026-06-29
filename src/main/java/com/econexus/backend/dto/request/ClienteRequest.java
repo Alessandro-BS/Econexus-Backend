@@ -2,6 +2,7 @@ package com.econexus.backend.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,6 +23,7 @@ public class ClienteRequest {
     private String ruc;
 
     @NotBlank(message = "El contacto principal es obligatorio")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$", message = "El contacto principal solo debe contener letras")
     private String contactoPrincipal;
 
     @NotBlank(message = "El teléfono es obligatorio")

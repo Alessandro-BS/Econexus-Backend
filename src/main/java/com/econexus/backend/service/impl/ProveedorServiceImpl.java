@@ -30,7 +30,6 @@ public class ProveedorServiceImpl implements ProveedorService {
     @Transactional(readOnly = true)
     public List<ProveedorResponse> listarProveedores() {
         return proveedorRepository.findAll().stream()
-                .filter(p -> p.getEstado() == EstadoEnum.ACTIVO)
                 .map(proveedorMapper::toResponse)
                 .collect(Collectors.toList());
     }
