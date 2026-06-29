@@ -1,80 +1,67 @@
-# 🌿 Econexus Backend
+# 🌿 Econexus Backend - API RESTful
+
+![Java](https://img.shields.io/badge/Java-17-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.2.5-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Security-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![Render](https://img.shields.io/badge/Render-Deploy-46E3B7?style=for-the-badge&logo=render&logoColor=white)
 
 **Sistema de Gestión de Reportes y Normativas de Saneamiento Ambiental**
 
-Backend RESTful desarrollado con Spring Boot + Java 17 para administrar, monitorear y optimizar los procesos de una empresa enfocada en servicios de saneamiento ambiental (Fumigación, Desinsectación, Manejo de Residuos Sólidos y Líquidos).
+Backend RESTful corporativo desarrollado bajo arquitectura multicapa para administrar, monitorear y optimizar los procesos de una empresa enfocada en servicios de saneamiento ambiental (Fumigación, Desinsectación, Manejo de Residuos Sólidos y Líquidos).
 
-> 🔗 **Frontend:** [Econexus Frontend (React + Vite)](https://github.com/Alessandro-BS/Econexus_Frontend) — Desplegado en [econexus-frontend.vercel.app](https://econexus-frontend.vercel.app)
-> 🔗 **Backend (API):** Desplegado en Render — [Swagger UI](https://econexus-backend-0aa6.onrender.com/swagger-ui.html)
-
----
-
-## ⚙️ Stack Tecnológico
-
-| Componente | Tecnología | Versión |
-|---|---|---|
-| Lenguaje | Java | 17 LTS |
-| Framework | Spring Boot | 3.2.5 |
-| Build Tool | Maven | 3.9+ |
-| Base de Datos | MySQL (Aiven) | 8.0 |
-| Documentación API | SpringDoc OpenAPI (Swagger) | 2.3.0 |
-| Seguridad | Spring Security + JWT (jjwt) | 0.12.5 |
-| Deploy | Render | — |
-
-### Dependencias principales
-
-- **Spring Web** — REST APIs
-- **Spring Data JPA** — Persistencia con Hibernate
-- **Spring Boot Validation** — Validación de DTOs (`@Valid`, `@NotBlank`, etc.)
-- **MySQL Connector/J** — Driver de base de datos
-- **Lombok** — Reducción de boilerplate (`@Data`, `@Builder`, etc.)
-- **Spring Boot DevTools** — Hot reload en desarrollo
-- **SpringDoc OpenAPI** — Swagger UI interactivo
-- **Spring Security + JWT** — Autenticación y autorización por roles
+> 🔗 **Frontend (React):** [Repositorio](https://github.com/Alessandro-BS/Econexus_Frontend) | [Live Demo](https://econexus-frontend.onrender.com/)
+> 🔗 **Backend (API):** [Live API](https://econexus-backend-0aa6.onrender.com) | [Swagger UI Docs](https://econexus-backend-0aa6.onrender.com/swagger-ui.html)
 
 ---
 
-## 📂 Estructura del Proyecto
+## ⚙️ Stack Tecnológico y Dependencias
 
-```
-Econexus-Backend/
-├── .mvn/wrapper/              # Maven Wrapper
-├── src/
-│   ├── main/
-│   │   ├── java/com/econexus/backend/
-│   │   │   ├── config/        # Configuración (CORS, Swagger, Security)
-│   │   │   ├── security/      # Módulo de seguridad
-│   │   │   │   ├── jwt/       # JWT Token Provider, Auth Filter
-│   │   │   │   └── service/   # CustomUserDetailsService
-│   │   │   ├── model/         # Dominio
-│   │   │   │   ├── entity/    # Entidades JPA (7 tablas)
-│   │   │   │   └── enums/     # Enumeraciones (Rol, Estado, etc.)
-│   │   │   ├── repository/    # Interfaces JPA Repository
-│   │   │   ├── dto/
-│   │   │   │   ├── request/   # DTOs de entrada (validados)
-│   │   │   │   └── response/  # DTOs de salida (sin datos sensibles)
-│   │   │   ├── mapper/        # Conversión Entity ↔ DTO
-│   │   │   ├── service/       # Lógica de negocio
-│   │   │   ├── controller/    # REST Controllers
-│   │   │   │   ├── api/       # Endpoints REST (/api/*)
-│   │   │   │   └── web/       # Health check, Swagger redirect
-│   │   │   ├── exception/     # Manejo global de excepciones
-│   │   │   └── EconexusBackendApplication.java
-│   │   └── resources/
-│   │       ├── db/
-│   │       │   └── saneamiento_ambiental.sql  # Script de BD (v2.0)
-│   │       └── application.yml
-│   └── test/java/com/econexus/backend/
-├── .gitignore
-├── .gitattributes
-├── mvnw / mvnw.cmd            # Maven Wrapper scripts
-├── pom.xml                    # Configuración Maven + dependencias
-└── README.md
+El proyecto está construido sobre el ecosistema de Spring, priorizando seguridad, validación y fácil mantenimiento mediante el patrón DTO.
+
+- **Core & API:** Java 17 LTS, Spring Boot 3.2.5, Spring Web
+- **Persistencia:** Spring Data JPA, Hibernate, MySQL Connector/J
+- **Seguridad:** Spring Security, JSON Web Tokens (JJWT 0.12.5)
+- **Documentación:** SpringDoc OpenAPI 2.3.0 (Swagger)
+- **Utilidades:** Lombok (Reducción de boilerplate), Spring Boot Validation (Jakarta)
+- **Despliegue & CI/CD:** Render, GitHub Actions
+
+---
+
+## 🏗️ Arquitectura del Sistema
+
+El sistema implementa una arquitectura limpia (Clean Architecture) dividida en capas físicas y lógicas, asegurando el principio de responsabilidad única (SRP).
+
+```mermaid
+graph TD
+    Client["📱 Cliente (React Vite)"] -- "HTTPS / JSON\n(Bearer Token)" --> Controller
+    
+    subgraph "API REST (Spring Boot)"
+        Controller["🟢 Controllers\n(Exposición de Endpoints)"] 
+        Security["🛡️ Security Filter Chain\n(Autenticación JWT & RBAC)"]
+        Service["⚙️ Services\n(Lógica de Negocio)"]
+        Mapper["🔄 Mappers\n(Entity ↔ DTO)"]
+        Repository["💾 Repositories\n(Spring Data JPA)"]
+        
+        Client -.-> Security
+        Security --> Controller
+        Controller --> Mapper
+        Controller --> Service
+        Service --> Repository
+    end
+    
+    subgraph "Persistencia"
+        Database[("🗄️ MySQL 8.0\n(Cloud Aiven)")]
+    end
+    
+    Repository -- "Hibernate / SQL" --> Database
 ```
 
 ---
 
-## 🗄️ Diagrama de Base de Datos
+## 🗄️ Modelo Entidad-Relación (MER)
+
+La base de datos relacional está completamente normalizada para garantizar la integridad referencial de los servicios medioambientales.
 
 ```mermaid
 erDiagram
@@ -85,370 +72,143 @@ erDiagram
         VARCHAR telefono
         VARCHAR password_hash
         ENUM rol "ADMIN | SUPERVISOR | OPERADOR"
-        ENUM estado "ACTIVO | INACTIVO"
-        DATETIME ultimo_login
-        DATETIME created_at
-        DATETIME updated_at
     }
 
     CLIENTES {
         INT id PK
         VARCHAR razon_social
         VARCHAR ruc UK
-        VARCHAR contacto_principal
-        VARCHAR telefono
-        VARCHAR email
-        TEXT direccion
-        ENUM estado "ACTIVO | INACTIVO"
-        DATETIME created_at
-        DATETIME updated_at
     }
 
     TIPOS_SERVICIO {
         INT id PK
         VARCHAR nombre UK
-        ENUM categoria "SOLIDO_PELIGROSO | SOLIDO_NO_PELIGROSO | LIQUIDO | FUMIGACION | DESINFECCION | DESINSECTACION"
-        TEXT descripcion
-        ENUM estado "ACTIVO | INACTIVO"
-        DATETIME created_at
-        DATETIME updated_at
+        ENUM categoria
     }
 
     PROVEEDORES {
         INT id PK
         VARCHAR razon_social
         VARCHAR ruc UK
-        VARCHAR contacto_principal
-        VARCHAR telefono
-        VARCHAR email
-        TEXT direccion
         INT tipo_servicio_id FK
-        ENUM estado "ACTIVO | INACTIVO"
-        DATETIME created_at
-        DATETIME updated_at
     }
 
     ORDENES_SERVICIO {
         INT id PK
         VARCHAR numero_orden UK
-        DATETIME fecha_emision
         INT cliente_id FK
         INT tipo_servicio_id FK
-        DECIMAL monto_total
-        ENUM estado_pago "PENDIENTE | PAGADO | ANULADO"
-        VARCHAR factura_url
-        TEXT observaciones
-        DATETIME created_at
-        DATETIME updated_at
+        ENUM estado_pago
     }
 
     REPORTES {
         INT id PK
         INT cliente_id FK
-        INT tipo_servicio_id FK
         INT orden_servicio_id FK
-        TEXT descripcion
-        DECIMAL cantidad
-        ENUM unidad_medida "KG | LITROS | M2 | UNIDAD"
-        ENUM estado_cumplimiento "PENDIENTE | EN_PROCESO | CUMPLIDO | OBSERVADO"
-        DATETIME created_at
-        DATETIME updated_at
+        ENUM estado_cumplimiento
     }
 
     NORMATIVAS {
         INT id PK
         VARCHAR codigo UK
-        VARCHAR titulo
-        TEXT descripcion
-        DATE fecha_publicacion
-        VARCHAR entidad_emisora
-        VARCHAR url_documento
-        ENUM estado "VIGENTE | DEROGADA"
-        DATETIME created_at
-        DATETIME updated_at
+        ENUM estado
     }
 
     CLIENTES ||--o{ ORDENES_SERVICIO : "contrata"
-    CLIENTES ||--o{ REPORTES : "tiene"
+    CLIENTES ||--o{ REPORTES : "posee"
     TIPOS_SERVICIO ||--o{ PROVEEDORES : "suministra"
-    TIPOS_SERVICIO ||--o{ ORDENES_SERVICIO : "realiza"
-    TIPOS_SERVICIO ||--o{ REPORTES : "clasifica"
-    ORDENES_SERVICIO ||--o{ REPORTES : "genera"
+    TIPOS_SERVICIO ||--o{ ORDENES_SERVICIO : "clasifica"
+    ORDENES_SERVICIO ||--o{ REPORTES : "genera_trazabilidad"
 ```
 
 ---
 
-## 🏗️ Diagrama de Arquitectura
+## 🔐 Seguridad y Autenticación (RBAC)
 
-```mermaid
-graph TB
-    subgraph Frontend["🖥️ Frontend - Vercel"]
-        React["React 18 + Vite"]
-    end
+El acceso a los recursos de la API está protegido mediante **JSON Web Tokens (JWT)** y control de acceso basado en roles (RBAC). Todo request (excepto `/api/auth/login`) requiere un header `Authorization: Bearer <token>`.
 
-    subgraph Backend["⚙️ Backend - Render"]
-        Controller["REST Controllers"]
-        Service["Services"]
-        Repository["JPA Repositories"]
-        Security["Spring Security + JWT"]
-        Swagger["Swagger UI"]
-    end
-
-    subgraph Database["🗄️ Base de Datos - Aiven"]
-        MySQL["MySQL 8.0"]
-    end
-
-    React -->|"HTTP/JSON + Bearer JWT"| Controller
-    Controller --> Service
-    Service --> Repository
-    Repository --> MySQL
-    Security -->|"Filtra y valida requests"| Controller
-    Swagger -->|"/swagger-ui.html"| Controller
-```
+| Módulo / Acción | `ROLE_ADMIN` | `ROLE_SUPERVISOR` | `ROLE_OPERADOR` |
+|:---|:---:|:---:|:---:|
+| **Usuarios** (Crear, Editar, Eliminar) | ✅ | ❌ | ❌ |
+| **Clientes & Proveedores** (Mutaciones) | ✅ | ❌ | ❌ |
+| **Órdenes de Servicio** (Crear, Editar) | ✅ | ✅ | ❌ |
+| **Reportes** (Crear) | ✅ | ✅ | ✅ |
+| **Lectura global** (GET endpoints) | ✅ | ✅ | ✅ |
 
 ---
 
-## ✅ Requerimientos Funcionales
+## 🚀 Endpoints Principales y Documentación
 
-| ID | Módulo | Descripción |
-|---|---|---|
-| RF-01 | Autenticación | Login con email/password, generación de JWT |
-| RF-02 | Autenticación | Control de acceso por roles (ADMIN, SUPERVISOR, OPERADOR) |
-| RF-03 | Usuarios | Crear nuevos usuarios en el sistema |
-| RF-04 | Usuarios | Listar usuarios registrados |
-| RF-05 | Usuarios | Actualizar datos de usuarios |
-| RF-06 | Usuarios | Eliminar/Desactivar usuarios |
-| RF-07 | Clientes | Registrar clientes (empresas contratantes) |
-| RF-08 | Clientes | Listar clientes registrados |
-| RF-09 | Clientes | Actualizar datos de clientes |
-| RF-10 | Clientes | Eliminar clientes |
-| RF-11 | Proveedores | Registrar nuevos proveedores |
-| RF-12 | Proveedores | Listar proveedores y su relación a tipos de servicio |
-| RF-13 | Proveedores | Actualizar proveedores |
-| RF-14 | Proveedores | Eliminar proveedores |
-| RF-15 | Tipos de Servicio | Crear catálogo de tipos de servicio/residuo |
-| RF-16 | Tipos de Servicio | Listar tipos de servicio |
-| RF-17 | Tipos de Servicio | Actualizar tipos de servicio |
-| RF-18 | Tipos de Servicio | Eliminar tipos de servicio |
-| RF-19 | Órdenes de Servicio | Crear órdenes vinculadas a clientes |
-| RF-20 | Órdenes de Servicio | Listar órdenes de servicio |
-| RF-21 | Órdenes de Servicio | Actualizar órdenes y estados de pago |
-| RF-22 | Órdenes de Servicio | Anular/Eliminar órdenes de servicio |
-| RF-23 | Reportes | Crear reporte de cumplimiento post-servicio |
-| RF-24 | Reportes | Listar reportes generados |
-| RF-25 | Reportes | Actualizar estado de cumplimiento de reportes |
-| RF-26 | Reportes | Eliminar reportes |
-| RF-27 | Normativas | Registrar marco legal aplicable |
-| RF-28 | Normativas | Listar normativas |
-| RF-29 | Normativas | Actualizar normativas |
-| RF-30 | Normativas | Eliminar/Derogar normativas |
-| RF-31 | Dashboard | Endpoint de KPIs: montos cobrados, órdenes generadas/pendientes, total clientes |
-| RF-32 | Búsqueda | Endpoint de búsqueda global multi-módulo |
-| RF-33 | Validación | Validación de datos de entrada en todos los endpoints |
+La documentación interactiva completa de todos los endpoints, esquemas de DTOs y parámetros está autogenerada con Swagger. 
+👉 **[Ver Documentación Swagger de la API](https://econexus-backend-0aa6.onrender.com/swagger-ui.html)**
 
-## 🔒 Requerimientos No Funcionales
+### Autenticación
+- `POST /api/auth/login` - Genera token JWT.
 
-| ID | Categoría | Descripción |
-|---|---|---|
-| RNF-01 | Rendimiento | Tiempo de respuesta < 500ms para operaciones CRUD |
-| RNF-02 | Seguridad | Passwords hasheados con BCrypt, tokens JWT con expiración de 24h |
-| RNF-03 | Seguridad | CORS configurado exclusivamente para el dominio del frontend |
-| RNF-04 | Disponibilidad | Deploy en Render con uptime ≥ 99% |
-| RNF-05 | Escalabilidad | Arquitectura en capas (Controller → Service → Repository) |
-| RNF-06 | Mantenibilidad | Patrón DTO para desacoplar entidades de respuestas API |
-| RNF-07 | Documentación | API documentada con Swagger/OpenAPI accesible en `/swagger-ui.html` |
-| RNF-08 | Compatibilidad | API RESTful consumible desde React (JSON) |
-| RNF-09 | Código | Convenciones Java estándar, código documentado con Javadoc |
+### Recursos (Ejemplo)
+- `GET /api/clientes` - Lista de clientes paginada.
+- `POST /api/ordenes` - Creación de nueva orden de servicio.
+- `GET /api/dashboard/kpis` - Estadísticas y métricas del negocio.
 
 ---
 
-## 🔐 Roles y Permisos (RBAC)
-
-| Acción | ADMIN | SUPERVISOR | OPERADOR |
-|---|---|---|---|
-| Gestionar usuarios | ✅ | ❌ | ❌ |
-| Crear/Editar/Eliminar clientes | ✅ | ❌ | ❌ |
-| Crear/Editar órdenes | ✅ | ✅ | ❌ |
-| Editar reportes | ✅ | ✅ | ❌ |
-| Crear reportes | ✅ | ✅ | ✅ |
-| Listar/Ver datos | ✅ | ✅ | ✅ |
-
----
-
-## 🚀 Endpoints Desplegados y Funcionales (Prioridad)
-
-La API se encuentra desplegada en Render y documentada a través de Swagger. Puedes probarla en vivo aquí:
-👉 **[Swagger UI (Render)](https://econexus-backend-0aa6.onrender.com/swagger-ui.html)**
-
-### Endpoints Principales
-
-| Método | Endpoint | Descripción | Estado |
-|---|---|---|---|
-| `POST` | `/api/auth/login` | Inicio de sesión y generación de token JWT | ✅ Funcional |
-
-## 🌐 Resto de Endpoints (Planificados / En Desarrollo)
-
-| Método | Endpoint | Descripción | Rol mínimo |
-|---|---|---|---|
-| `POST` | `/api/auth/login` | Login | Público |
-| `GET` | `/api/clientes` | Listar clientes | OPERADOR |
-| `GET` | `/api/clientes/buscar?q=` | Buscar cliente por razón social/RUC | OPERADOR |
-| `POST` | `/api/clientes` | Crear cliente | ADMIN |
-| `PUT` | `/api/clientes/{id}` | Editar cliente | ADMIN |
-| `DELETE` | `/api/clientes/{id}` | Eliminar cliente | ADMIN |
-| `GET` | `/api/proveedores` | Listar proveedores | OPERADOR |
-| `POST` | `/api/proveedores` | Crear proveedor | ADMIN |
-| `PUT` | `/api/proveedores/{id}` | Editar proveedor | ADMIN |
-| `DELETE` | `/api/proveedores/{id}` | Eliminar proveedor | ADMIN |
-| `GET` | `/api/tipos-servicio` | Listar catálogo | OPERADOR |
-| `POST` | `/api/tipos-servicio` | Crear tipo | ADMIN |
-| `PUT` | `/api/tipos-servicio/{id}` | Editar tipo | ADMIN |
-| `DELETE` | `/api/tipos-servicio/{id}` | Eliminar tipo | ADMIN |
-| `GET` | `/api/ordenes` | Listar órdenes | OPERADOR |
-| `POST` | `/api/ordenes` | Crear orden | SUPERVISOR |
-| `PUT` | `/api/ordenes/{id}` | Editar orden | SUPERVISOR |
-| `DELETE` | `/api/ordenes/{id}` | Anular orden | ADMIN |
-| `GET` | `/api/reportes` | Listar reportes | OPERADOR |
-| `POST` | `/api/reportes` | Crear reporte | OPERADOR |
-| `PUT` | `/api/reportes/{id}` | Editar reporte | SUPERVISOR |
-| `DELETE` | `/api/reportes/{id}` | Eliminar reporte | ADMIN |
-| `GET` | `/api/normativas` | Listar normativas | OPERADOR |
-| `POST` | `/api/normativas` | Crear normativa | ADMIN |
-| `PUT` | `/api/normativas/{id}` | Editar normativa | ADMIN |
-| `DELETE` | `/api/normativas/{id}` | Eliminar normativa | ADMIN |
-| `GET` | `/api/usuarios` | Listar usuarios | ADMIN |
-| `POST` | `/api/usuarios` | Crear usuario | ADMIN |
-| `PUT` | `/api/usuarios/{id}` | Editar usuario | ADMIN |
-| `PATCH` | `/api/usuarios/{id}/estado` | Activar/Desactivar | ADMIN |
-| `GET` | `/api/dashboard/kpis` | KPIs globales | SUPERVISOR |
-| `GET` | `/api/busqueda?q=` | Búsqueda global | OPERADOR |
-
----
-
-## 🗓️ Plan de Sprints (4 Semanas)
-
-### Sprint 1 — Fundamentos y Backlog (May 8–14) `30 SP`
-
-| HU | Historia | SP |
-|---|---|---|
-| HU-CF01 | Inicializar proyecto Spring Boot con Maven | 3 |
-| HU-CF02 | Configurar conexión a MySQL con JPA | 3 |
-| HU-CF03 | Configurar Swagger/OpenAPI | 2 |
-| HU-CF04 | Configurar CORS | 1 |
-| HU-CF05 | Implementar manejador global de excepciones | 3 |
-| HU-CF06 | Definir estructura de paquetes | 2 |
-| HU-CF07 | Crear DTOs base (Request/Response) | 3 |
-| HU-C01 | Listar clientes | 3 |
-| HU-C02 | Crear cliente | 3 |
-| HU-TS01 | Listar tipos de servicio | 2 |
-| HU-TS02 | Crear tipo de servicio | 2 |
-| HU-N01 | Listar normativas | 2 |
-| HU-N02 | Crear normativa | 3 |
-
-### Sprint 2 — CRUDs Completos (May 15–21) `38 SP`
-
-| HU | Historia | SP |
-|---|---|---|
-| HU-C03 | Editar cliente | 3 |
-| HU-C04 | Eliminar cliente | 2 |
-| HU-C05 | Buscar clientes por razón social/RUC | 3 |
-| HU-P01 | Listar proveedores | 3 |
-| HU-P02 | Crear proveedor | 3 |
-| HU-P03 | Editar proveedor | 3 |
-| HU-P04 | Eliminar proveedor | 2 |
-| HU-TS03 | Editar tipo de servicio | 2 |
-| HU-TS04 | Eliminar tipo de servicio | 1 |
-| HU-O01 | Listar órdenes de servicio | 3 |
-| HU-O02 | Buscar cliente al crear orden | 5 |
-| HU-O03 | Crear orden de servicio | 5 |
-| HU-N03 | Editar normativa | 2 |
-| HU-N04 | Eliminar normativa | 1 |
-
-### Sprint 3 — Reportes + Usuarios + Login (May 22–28) `39 SP`
-
-| HU | Historia | SP |
-|---|---|---|
-| HU-O04 | Editar orden | 3 |
-| HU-O05 | Eliminar/anular orden | 2 |
-| HU-R01 | Listar reportes | 3 |
-| HU-R02 | Crear reporte | 5 |
-| HU-R03 | Editar reporte | 3 |
-| HU-R04 | Eliminar reporte | 2 |
-| HU-U01 | Listar usuarios | 3 |
-| HU-U02 | Crear usuario (con BCrypt) | 5 |
-| HU-U03 | Editar usuario | 3 |
-| HU-U04 | Desactivar usuario | 2 |
-| HU-A01 | Login con JWT | 8 |
-
-### Sprint 4 — Seguridad + Dashboard + Deploy (May 29–Jun 4) `23 SP`
-
-| HU | Historia | SP |
-|---|---|---|
-| HU-A02 | Validar tokens JWT en cada request | 8 |
-| HU-A03 | Proteger endpoints por rol | 5 |
-| HU-D01 | KPIs del dashboard | 5 |
-| HU-D02 | Estadísticas de órdenes | 5 |
-
-> **Total: 130 Story Points** en 4 sprints
-
-> 🔗 **Scrum (Jira):** https://proyecto-econexus.atlassian.net/jira/software/projects/SCRU/summary
-
----
-
-## 🛠️ Instalación y Uso
+## 🛠️ Instalación y Entorno de Desarrollo
 
 ### Prerrequisitos
-
-- Java 17+
-- MySQL 8.0 (local o en Railway)
+- **Java Development Kit (JDK) 17** o superior.
+- **MySQL 8.0** instalado localmente o en un contenedor Docker.
+- **Git** y **Maven** (Opcional, se incluye Maven Wrapper).
 
 ### 1. Clonar el repositorio
-
 ```bash
 git clone https://github.com/Alessandro-BS/Econexus-Backend.git
 cd Econexus-Backend
 ```
 
-### 2. Configurar la base de datos
-
-Crear la base de datos ejecutando el script SQL:
+### 2. Configurar la Base de Datos
+Ejecuta el siguiente comando en tu cliente MySQL para crear la base de datos:
 ```sql
 CREATE DATABASE IF NOT EXISTS saneamiento_ambiental
   DEFAULT CHARACTER SET utf8mb4
   DEFAULT COLLATE utf8mb4_unicode_ci;
 ```
 
-### 3. Configurar variables de entorno (opcional)
-
-Si usas valores distintos a los defaults, configura:
-```bash
-export DB_HOST=localhost
-export DB_PORT=3306
-export DB_NAME=saneamiento_ambiental
-export DB_USER=root
-export DB_PASSWORD=root
+### 3. Variables de Entorno
+Crea un archivo `application-dev.yml` o configura las variables de entorno en tu sistema:
+```properties
+SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/saneamiento_ambiental
+SPRING_DATASOURCE_USERNAME=root
+SPRING_DATASOURCE_PASSWORD=tu_password
+JWT_SECRET_KEY=tu_clave_secreta_en_base64_muy_larga
 ```
 
-### 4. Ejecutar el servidor
+### 4. Compilar y Ejecutar
+Usando Maven Wrapper (no requiere instalación previa de Maven):
 
-```bash
-# Windows
+**En Windows:**
+```cmd
+.\mvnw.cmd clean install -DskipTests
 .\mvnw.cmd spring-boot:run
+```
 
-# Linux / Mac
+**En Linux / macOS:**
+```bash
+./mvnw clean install -DskipTests
 ./mvnw spring-boot:run
 ```
 
-El servidor estará disponible en `http://localhost:8080`
-
-### 5. Acceder a Swagger UI
-
-```
-http://localhost:8080/swagger-ui.html
-```
+El servidor iniciará en `http://localhost:8080`.
+La documentación Swagger estará en `http://localhost:8080/swagger-ui.html`.
 
 ---
 
-## 👥 Equipo
+## 👨‍💻 Contribución y Sprints
 
-Proyecto desarrollado para el curso de **Herramientas de Desarrollo**.
+El desarrollo de este backend se gestionó utilizando la metodología ágil **Scrum** en 4 Sprints principales, alcanzando 130 Story Points en total.
+
+1. **Sprint 1:** Configuración inicial, DTOs, Seguridad Base y CRUDs menores.
+2. **Sprint 2:** Lógica de negocio relacional, Órdenes de Servicio y Proveedores.
+3. **Sprint 3:** Reportes técnicos, Gestión de Usuarios y JWT Auth Filter.
+4. **Sprint 4:** Dashboards, KPIs, Validaciones complejas y CI/CD en Render.
+
+*Proyecto desarrollado para el curso de Herramientas de Desarrollo.*
